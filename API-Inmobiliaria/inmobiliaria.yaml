@@ -1,0 +1,1720 @@
+openapi: 3.0.1
+info:
+  title: API Inmobiliaria
+  description: API para la gestión de una inmobiliaria.
+  version: 1.0.0
+servers:
+  - url: 'https://api.inmobiliaria.com'
+
+paths:
+  # ENTIDAD: AGENCIA
+
+  /agencias:
+    get:
+      summary: Lista de agencias
+      description: |
+        Devuelve una lista con todas las agencias
+        
+        Se permite filtrar agencias por tres campos al mismo tiempo:
+          - **nombre**: Filtra por nombre
+          - **código postal**: Filtra por código postal exacto
+          - **abierto sábados**: Filtra por sábados abierto.
+      parameters:
+        - name: nombre
+          in: query
+          schema:
+            type: string
+          description: Filtrar por nombre de agencia (coincidencia parcial)
+        - name: codigoPostal
+          in: query
+          schema:
+            type: integer
+          description: Filtrar por código postal exacto
+        - name: abiertoSabados
+          in: query
+          schema:
+            type: boolean
+          description: Filtrar si abren los sábados
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/AgenciaOutDto'
+              examples:
+                ListaInmobiliarias:
+                  summary: Lista con varias inmobiliarias
+                  value: 
+                    - id: 1
+                      nombre: "Inmobiliaria Norte"
+                      direccion: "Calle A, 1"
+                      facturacionAnual: 1000.0
+                      codigoPostal: 28001
+                      abiertoSabados: true
+                      fechaFundacion: "2010-01-01"
+                    - id: 2
+                      nombre: "Inmobiliaria Sur"
+                      direccion: "Calle B, 2"
+                      facturacionAnual: 2000.0
+                      codigoPostal: 28002
+                      abiertoSabados: false
+                      fechaFundacion: "2015-05-05"
+                listaFiltrada:
+                  summary: Lista con un solo resultado filtrado por sábado
+                  value:
+                    - id: 1
+                      nombre: "Inmobiliaria Norte"
+                      direccion: "Calle A, 1"
+                      facturacionAnual: 1000.0
+                      codigoPostal: 28001
+                      abiertoSabados: true
+                      fechaFundacion: "2010-01-01"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      summary: Crear nueva agencia
+      description: Registra una nueva agencia
+      requestBody:
+        description: Datos de la nueva agencia
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgenciaInDto'
+            examples:
+              agenciaUno:
+                summary: Creación Agencia Uno
+                value:
+                  nombre: "Agencia Uno"
+                  direccion: "Plaza Mayor 1"
+                  facturacionAnual: 500000.00
+                  codigoPostal: 28012
+                  abiertoSabados: true
+                  fechaFundacion: "2000-01-01"
+              agenciaDos:
+                summary: Creación Agencia Dos
+                value:
+                  nombre: "Agencia Dos"
+                  direccion: "Calle Pez 5"
+                  facturacionAnual: 120000.00
+                  codigoPostal: 28004
+                  abiertoSabados: false
+                  fechaFundacion: "2020-03-15"
+      responses:
+        '201':
+          description: Agencia registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Agencia'
+              examples:
+                exitoCentro:
+                  summary: Respuesta Agencia Uno
+                  value:
+                    id: 10
+                    nombre: "Agencia Uno"
+                    direccion: "Plaza Mayor 1"
+                    facturacionAnual: 500000.00
+                    codigoPostal: 28012
+                    abiertoSabados: true
+                    fechaFundacion: "2000-01-01"
+                exitoBarrio:
+                  summary: Respuesta Agencia Dos
+                  value:
+                    id: 11
+                    nombre: "Agencia Dos"
+                    direccion: "Calle Pez 5"
+                    facturacionAnual: 120000.00
+                    codigoPostal: 28004
+                    abiertoSabados: false
+                    fechaFundacion: "2020-03-15"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+  /agencias/{id}:
+    get:
+      summary: Listar agencia por id
+      description: |
+        Devuelve una sola agencia por su id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de agencia
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgenciaOutDto'
+              examples:
+                agencia1:
+                  summary: Agencia ID 1
+                  value:
+                    id: 1
+                    nombre: "Inmobiliaria Norte"
+                    direccion: "Calle A, 1"
+                    facturacionAnual: 1000.0
+                    codigoPostal: 28001
+                    abiertoSabados: true
+                    fechaFundacion: "2010-01-01"
+                agencia2:
+                  summary: Agencia ID 2
+                  value:
+                    id: 2
+                    nombre: "Agencia Sur"
+                    direccion: "Calle B, 2"
+                    facturacionAnual: 2000.0
+                    codigoPostal: 28002
+                    abiertoSabados: false
+                    fechaFundacion: "2015-05-05"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      summary: Actualizar agencia
+      description:  |
+        Actualiza los datos de una agencia.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AgenciaInDto'
+            examples:
+              actualizarNombre:
+                summary: Modificar nombre
+                value:
+                  nombre: "Agencia Uno Modificada"
+                  direccion: "Plaza Mayor 1"
+                  facturacionAnual: 500000.00
+                  codigoPostal: 28012
+                  abiertoSabados: true
+                  fechaFundacion: "2000-01-01"
+              actualizarHorario:
+                summary: Modificar apertura sábados
+                value:
+                  nombre: "Agencia Uno"
+                  direccion: "Plaza Mayor 1"
+                  facturacionAnual: 500000.00
+                  codigoPostal: 28012
+                  abiertoSabados: false
+                  fechaFundacion: "2000-01-01"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AgenciaOutDto'
+              examples:
+                actualizarNombre:
+                  summary: Nombre modificado
+                  value:
+                    nombre: "Agencia Uno Modificada"
+                    direccion: "Plaza Mayor 1"
+                    facturacionAnual: 500000.00
+                    codigoPostal: 28012
+                    abiertoSabados: true
+                    fechaFundacion: "2000-01-01"
+                actualizarHorario:
+                  summary: Apertura sábados modificada
+                  value:
+                    nombre: "Agencia Uno"
+                    direccion: "Plaza Mayor 1"
+                    facturacionAnual: 500000.00
+                    codigoPostal: 28012
+                    abiertoSabados: false
+                    fechaFundacion: "2000-01-01"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+    delete:
+      summary: Eliminar agencia
+      description: |
+        Elimina los datos de una agencia
+      responses:
+        '204':
+          description: Eliminado correctamente
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+
+  #  ENTIDAD: PROPIETARIO
+
+  /propietarios:
+    get:
+      summary: Listar propietarios
+      description: |
+        Devuelve una lista con todos los propietarios
+        
+        Se permite filtrar propietarios por tres campos al mismo tiempo:
+          - **dni**: Filtra por dni de propietario
+          - **es empresa**: Filtra por tipo de propietario, empresa o no
+          - **nombre**: Filtra por nombre de propietario.
+      parameters:
+        - name: dni
+          in: query
+          schema:
+            type: string
+        - name: esEmpresa
+          in: query
+          schema:
+            type: boolean
+        - name: nombre
+          in: query
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PropietarioOutDto'
+              examples:
+                listaPropietarios:
+                  summary: Lista de todos los propietarios
+                  value:
+                    - id: 1
+                      dni: "12345678M"
+                      nombre: "Pepe García"
+                      telefono: "600111222"
+                      comision: 3.5
+                      esEmpresa: false
+                      fechaAlta: "2023-01-01"
+                    - id: 2
+                      dni: "B12345678"
+                      nombre: "Empresa S.L."
+                      telefono: "910002233"
+                      comision: 5.0
+                      esEmpresa: true
+                      fechaAlta: "2022-05-05"
+                listaEmpresas:
+                  summary: Lista filtrada por empresas
+                  value:
+                    - id: 2
+                      dni: "B12345678"
+                      nombre: "Empresa S.L."
+                      telefono: "910002233"
+                      comision: 5.0
+                      esEmpresa: true
+                      fechaAlta: "2022-05-05"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      summary: Crear propietario
+      description: Registra un nuevo propietario
+      requestBody:
+        description: Datos del nuevo propietario
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropietarioInDto'
+            examples:
+              particular:
+                summary: Propietario Particular
+                value:
+                  dni: "12345678Z"
+                  nombre: "Maria Garcia"
+                  telefono: "666777888"
+                  comision: 3.0
+                  esEmpresa: false
+                  fechaAlta: "2023-11-01"
+              empresa:
+                summary: Propietario Empresa
+                value:
+                  dni: "A87654321"
+                  nombre: "Empresa Dos S.A."
+                  telefono: "933444555"
+                  comision: 10.0
+                  esEmpresa: true
+                  fechaAlta: "2023-10-01"
+      responses:
+        '201':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Propietario'
+              examples:
+                respParticular:
+                  summary: Respuesta Particular
+                  value:
+                    id: 50
+                    dni: "12345678Z"
+                    nombre: "Maria Garcia"
+                    telefono: "666777888"
+                    comision: 3.0
+                    esEmpresa: false
+                    fechaAlta: "2023-11-01"
+                respEmpresa:
+                  summary: Respuesta Empresa
+                  value:
+                    id: 51
+                    dni: "A87654321"
+                    nombre: "Empresa Dos S.A."
+                    telefono: "933444555"
+                    comision: 10.0
+                    esEmpresa: true
+                    fechaAlta: "2023-10-01"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+  /propietarios/{id}:
+    get:
+      summary: Listar propietario por id
+      description: |
+        Devuelve una solo propietario por su id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de propietario
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropietarioOutDto'
+              examples:
+                prop1:
+                  summary: Ejemplo Particular
+                  value:
+                    id: 1
+                    dni: "12345678Z"
+                    nombre: "Pepe García"
+                    telefono: "600111222"
+                    comision: 3.5
+                    esEmpresa: false
+                    fechaAlta: "2023-01-01"
+                prop2:
+                  summary: Ejemplo Empresa
+                  value:
+                    id: 2
+                    dni: "B12345678"
+                    nombre: "Empresa S.L."
+                    telefono: "910002233"
+                    comision: 5.0
+                    esEmpresa: true
+                    fechaAlta: "2022-05-05"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    put:
+      summary: Actualizar propietario
+      description: |
+        Actualiza los datos de un propietario
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PropietarioInDto'
+            examples:
+              cambioTel:
+                summary: Cambiar teléfono
+                value:
+                  dni: "12345678Z"
+                  nombre: "Pepe García"
+                  telefono: "699999999" 
+                  comision: 3.5
+                  esEmpresa: false
+                  fechaAlta: "2023-01-01"
+              cambioComision:
+                summary: Cambiar comisión
+                value:
+                  dni: "12345678Z"
+                  nombre: "Pepe García"
+                  telefono: "600111222"
+                  comision: 4.0
+                  esEmpresa: false
+                  fechaAlta: "2023-01-01"
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PropietarioOutDto'
+              examples:
+                cambioTel:
+                  summary: Teléfono cambiado
+                  value:
+                    dni: "12345678Z"
+                    nombre: "Pepe García"
+                    telefono: "699999999"
+                    comision: 3.5
+                    esEmpresa: false
+                    fechaAlta: "2023-01-01"
+                cambioComision:
+                  summary: Comisión cambiada
+                  value:
+                    dni: "12345678Z"
+                    nombre: "Pepe García"
+                    telefono: "600111222"
+                    comision: 4.0
+                    esEmpresa: false
+                    fechaAlta: "2023-01-01"
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+    delete:
+      summary: Eliminar propietario
+      description: |
+        Elimina los datos de un propietario
+      responses:
+        '204':
+          description: Eliminado correctamente
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+
+  #  ENTIDAD: INMUEBLE
+
+  /inmuebles:
+    get:
+      summary: Lista de inmuebles
+      description: |
+        Devuelve una lista con todos los inmuebles
+        
+        Se permite filtrar inmuebles por tres campos al mismo tiempo:
+          - **precio max**: Filtra por precio máximo
+          - **metros min**: Filtra por metros mínimo
+          - **ascensor**: Filtra si tiene ascensor o no.
+      parameters:
+        - name: precioMax
+          in: query
+          description: Precio máximo del inmueble
+          schema:
+            type: number
+            format: float
+        - name: metrosMin
+          in: query
+          description: Mínimo de metros cuadrados
+          schema:
+            type: integer
+        - name: ascensor
+          in: query
+          description: Tiene ascensor o no
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/InmuebleOutDto'
+              examples:
+                listaVenta:
+                  summary: Lista de todos los inmuebles
+                  value:
+                    - id: 101
+                      titulo: "Piso Centro"
+                      precio: 300000.0
+                      metros: 100
+                      ascensor: true
+                      nombreAgencia: "Agencia A"
+                      nombrePropietario: "Juan"
+                    - id: 102
+                      titulo: "Chalet Afueras"
+                      precio: 450000.0
+                      metros: 200
+                      ascensor: false
+                      nombreAgencia: "Agencia B"
+                      nombrePropietario: "Maria"
+                listaAlquiler:
+                  summary: Inmuebles filtrados por precio máximo
+                  value:
+                    - id: 200
+                      titulo: "Estudio"
+                      precio: 100000.0
+                      metros: 40
+                      ascensor: true
+                      nombreAgencia: "Agencia A"
+                      nombrePropietario: "Pedro"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      summary: Crear nuevo inmueble
+      description: Registra un nuevo inmueble
+      requestBody:
+        description: Datos del nuevo inmueble
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InmuebleInDto'
+            examples:
+              pisoCentro:
+                summary: Crear Piso con Ascensor
+                value:
+                  titulo: "Ático luminoso"
+                  precio: 350000.00
+                  metros: 110
+                  latitud: 40.4167
+                  longitud: -3.7037
+                  ascensor: true
+                  fechaPublicacion: "2023-11-01"
+                  agenciaId: 10
+                  propietarioId: 50
+              casaCampo:
+                summary: Crear Piso sin Ascensor
+                value:
+                  titulo: "Casa de campo"
+                  precio: 150000.00
+                  metros: 250
+                  latitud: 39.4167
+                  longitud: -2.7037
+                  ascensor: false
+                  fechaPublicacion: "2023-10-01"
+                  agenciaId: 10
+                  propietarioId: 50
+      responses:
+        '201':
+          description: Inmueble registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Inmueble'
+              examples:
+                respPiso:
+                  summary: Piso registrado
+                  value:
+                    id: 501
+                    titulo: "Ático luminoso"
+                    precio: 350000.00
+                    metros: 110
+                    latitud: 40.4167
+                    longitud: -3.7037
+                    ascensor: true
+                    fechaPublicacion: "2023-11-01"
+                    agenciaId: 10
+                    propietarioId: 50
+                respCasa:
+                  summary: Casa registrada
+                  value:
+                    id: 502
+                    titulo: "Casa de campo"
+                    precio: 150000.00
+                    metros: 250
+                    latitud: 39.4167
+                    longitud: -2.7037
+                    ascensor: false
+                    fechaPublicacion: "2023-10-01"
+                    agenciaId: 10
+                    propietarioId: 50
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+  /inmuebles/{id}:
+
+    get:
+      summary: Obtener inmueble por id
+      description: |
+        Devuelve un solo inmueble por su id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de inmueble
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InmuebleOutDto'
+              examples:
+                inmueble1:
+                  summary: Piso
+                  value:
+                    id: 101
+                    titulo: "Piso Centro"
+                    precio: 300000.0
+                    metros: 100
+                    ascensor: true
+                    nombreAgencia: "Agencia A"
+                    nombrePropietario: "Juan"
+                inmueble2:
+                  summary: Chalet
+                  value:
+                    id: 102
+                    titulo: "Chalet Afueras"
+                    precio: 450000.0
+                    metros: 200
+                    ascensor: false
+                    nombreAgencia: "Agencia B"
+                    nombrePropietario: "Maria"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+    put:
+      summary: Actualizar inmueble
+      description: |
+        Actualiza los datos de un inmueble
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InmuebleInDto'
+            examples:
+              actualizarPrecio:
+                summary: Actualizar Precio
+                value:
+                  titulo: "Ático luminoso"
+                  precio: 320000.00
+                  metros: 110
+                  latitud: 40.4167
+                  longitud: -3.7037
+                  ascensor: true
+                  fechaPublicacion: "2023-11-01"
+                  agenciaId: 10
+                  propietarioId: 50
+              actualizarMetros:
+                summary: Actualizar Metros
+                value:
+                  titulo: "Ático luminoso"
+                  precio: 350000.00
+                  metros: 115 
+                  latitud: 40.4167
+                  longitud: -3.7037
+                  ascensor: true
+                  fechaPublicacion: "2023-11-01"
+                  agenciaId: 10
+                  propietarioId: 50
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InmuebleOutDto'
+              examples:
+                actualizarPrecio:
+                  summary: Precio actualizado
+                  value:
+                    titulo: "Ático luminoso"
+                    precio: 320000.00
+                    metros: 110
+                    latitud: 40.4167
+                    longitud: -3.7037
+                    ascensor: true
+                    fechaPublicacion: "2023-11-01"
+                    agenciaId: 10
+                    propietarioId: 50
+                actualizarMetros:
+                  summary: Metros actualizados
+                  value:
+                    titulo: "Ático luminoso"
+                    precio: 350000.00
+                    metros: 115
+                    latitud: 40.4167
+                    longitud: -3.7037
+                    ascensor: true
+                    fechaPublicacion: "2023-11-01"
+                    agenciaId: 10
+                    propietarioId: 50
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+    delete:
+      summary: Eliminar inmueble
+      description : |
+        Elimina los datos de un inmueble
+      responses:
+        '204':
+          description: Eliminado correctamente
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+  #  ENTIDAD: CLIENTE
+
+  /clientes:
+    get:
+      summary: Lista de clientes
+      description: |
+        Devuelve una lista con todos los clientes
+        
+        Se permite filtrar agencias por tres campos al mismo tiempo:
+          - **mail**: Filtra por mail de cliente
+          - **número teléfono**: Filtra por número de teléfono del cliente
+          - **suscrito**: Filtra cliente si están suscritos o no
+      parameters:
+        - name: email
+          in: query
+          schema:
+            type: string
+        - name: telefono
+          in: query
+          schema:
+            type: string
+        - name: suscrito
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClienteOutDto'
+              examples:
+                clientesSuscritos:
+                  summary: Lista de clientes suscritos
+                  value:
+                    - id: 1
+                      email: "cliente1@test.com"
+                      telefono: "666000111"
+                      edad: 40
+                      suscrito: true
+                    - id: 2
+                      email: "cliente2@test.com"
+                      telefono: "666000222"
+                      edad: 45
+                      suscrito: true
+                clientesNuevos:
+                  summary: Lista de clientes no suscritos
+                  value:
+                    - id: 3
+                      email: "nuevo@test.com"
+                      telefono: "666000333"
+                      edad: 25
+                      suscrito: false
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+    post:
+      summary: Crear nuevo cliente
+      description: Registra un nuevo cliente
+      requestBody:
+        description: Datos del nuevo cliente
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteInDto'
+            examples:
+              clienteJoven:
+                summary: Cliente Joven
+                value:
+                  email: "cliente1@mail.com"
+                  password: "Pass123"
+                  telefono: "600111000"
+                  presupuestoMaximo: 150000.0
+                  edad: 22
+                  fechaAlta: "2024-01-01"
+                  suscrito: false
+              clienteInversor:
+                summary: Cliente Inversor
+                value:
+                  email: "cliente2@mail.com"
+                  password: "Pass4321"
+                  telefono: "600999888"
+                  presupuestoMaximo: 1000000.0
+                  edad: 55
+                  fechaAlta: "2024-02-01"
+                  suscrito: true
+      responses:
+        '201':
+          description: Cliente registrado
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Cliente'
+              examples:
+                respJoven:
+                  summary: Respuesta Joven
+                  value:
+                    id: 100
+                    email: "cliente1@mail.com"
+                    password: "Pass123"
+                    telefono: "600111000"
+                    presupuestoMaximo: 150000.0
+                    edad: 22
+                    fechaAlta: "2024-01-01"
+                    suscrito: false
+                respInversor:
+                  summary: Respuesta Inversor
+                  value:
+                    id: 101
+                    email: "cliente2@mail.com"
+                    password: "Pass4321"
+                    telefono: "600999888"
+                    presupuestoMaximo: 1000000.0
+                    edad: 55
+                    fechaAlta: "2024-02-01"
+                    suscrito: true
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+
+  /clientes/{id}:
+    get:
+      summary: Obtener cliente
+      description: |
+        Devuelve una solo cliente por su id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteOutDto'
+              examples:
+                cli1:
+                  summary: Cliente Normal
+                  value:
+                    id: 1
+                    email: "normal@test.com"
+                    telefono: "666000111"
+                    edad: 30
+                    suscrito: false
+                cli2:
+                  summary: Cliente Suscrito
+                  value:
+                    id: 2
+                    email: "suscrito@test.com"
+                    telefono: "666000999"
+                    edad: 50
+                    suscrito: true
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+    put:
+      summary: Actualizar cliente
+      description: |
+        Actualiza los datos de un cliente.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteInDto'
+            examples:
+              subscribir:
+                summary: Subscribir cliente
+                value:
+                  email: "joven@mail.com"
+                  password: "Pass123"
+                  telefono: "600111000"
+                  presupuestoMaximo: 150000.0
+                  edad: 22
+                  fechaAlta: "2024-01-01"
+                  suscrito: true
+              cambioPass:
+                summary: Cambiar password
+                value:
+                  email: "joven@mail.com"
+                  password: "NewPassword!!"
+                  telefono: "600111000"
+                  presupuestoMaximo: 150000.0
+                  edad: 22
+                  fechaAlta: "2024-01-01"
+                  suscrito: false
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteOutDto'
+              examples:
+                subscribir:
+                  summary: Cliente suscrito
+                  value:
+                    email: "joven@mail.com"
+                    password: "Pass123"
+                    telefono: "600111000"
+                    presupuestoMaximo: 150000.0
+                    edad: 22
+                    fechaAlta: "2024-01-01"
+                    suscrito: true
+                cambioPass:
+                  summary: Password cambiada
+                  value:
+                    email: "joven@mail.com"
+                    password: "NewPassword!!"
+                    telefono: "600111000"
+                    presupuestoMaximo: 150000.0
+                    edad: 22
+                    fechaAlta: "2024-01-01"
+                    suscrito: false
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+    delete:
+      summary: Eliminar cliente
+      description: |
+        Elimina los datos de un cliente
+      responses:
+        '204':
+          description: Eliminado correctamente
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+  # 5. ENTIDAD: VISITA
+
+  /visitas:
+    get:
+      summary: Listar visitas con filtros
+      description: |
+        Devuelve una lista con todas las visitas
+        
+        Se permite filtrar visitas por tres campos al mismo tiempo:
+          - **estado**: Filtra por el estado de la visita
+          - **fechaDesde**: Filtra visitas posteriores a una fecha
+          - **valoracionMin**: Filtra por puntuación mínima.
+
+      parameters:
+        - name: estado
+          in: query
+          description: PENDIENTE, CONFIRMADA, CANCELADA
+          schema:
+            type: string
+        - name: fechaDesde
+          in: query
+          description: Filtra visitas posteriores a esta fecha
+          schema:
+            type: string
+            format: date-time
+        - name: valoracionMin
+          in: query
+          description: Valoración mínima (1-5)
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/VisitaOutDto'
+              examples:
+                pendientes:
+                  summary: Lista visitas Pendientes
+                  value:
+                    - id: 1
+                      fechaHora: "2025-01-01T10:00:00Z"
+                      estado: "PENDIENTE"
+                      valoracion: 0
+                      nombreCliente: "Ana"
+                      tituloInmueble: "Piso A"
+                    - id: 2
+                      fechaHora: "2025-01-02T10:00:00Z"
+                      estado: "PENDIENTE"
+                      valoracion: 0
+                      nombreCliente: "Luis"
+                      tituloInmueble: "Piso B"
+                realizadas:
+                  summary: Lista visitas realizadas
+                  value:
+                    - id: 3
+                      fechaHora: "2024-12-01T10:00:00Z"
+                      estado: "CONFIRMADA"
+                      valoracion: 4
+                      nombreCliente: "Ana"
+                      tituloInmueble: "Piso A"
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+    post:
+      summary: Agendar visita
+      description: Registra una nueva visita
+      requestBody:
+        description: Datos de la nueva visita
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VisitaInDto'
+            examples:
+              visitaNormal:
+                summary: Visita Estándar
+                value:
+                  fechaHora: "2025-01-01T10:00:00Z"
+                  comentarios: "Primera visita"
+                  estado: "PENDIENTE"
+                  valoracion: 0
+                  duracionEstimada: 30
+                  recordatorioActivo: true
+                  clienteId: 1
+                  inmuebleId: 10
+              visitaLarga:
+                summary: Visita Larga Duración
+                value:
+                  fechaHora: "2025-01-01T16:00:00Z"
+                  comentarios: "Ver zonas comunes y garaje"
+                  estado: "PENDIENTE"
+                  valoracion: 0
+                  duracionEstimada: 90
+                  recordatorioActivo: true
+                  clienteId: 2
+                  inmuebleId: 10
+      responses:
+        '201':
+          description: Visita registrada
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Visita'
+              examples:
+                respNormal:
+                  summary: Visita Estándar registrada
+                  value:
+                    id: 900
+                    fechaHora: "2025-01-01T10:00:00Z"
+                    comentarios: "Primera visita"
+                    estado: "PENDIENTE"
+                    valoracion: 0
+                    duracionEstimada: 30
+                    recordatorioActivo: true
+                    clienteId: 1
+                    inmuebleId: 10
+                respLarga:
+                  summary: Visita Larga registrada
+                  value:
+                    id: 901
+                    fechaHora: "2025-01-01T16:00:00Z"
+                    comentarios: "Ver zonas comunes y garaje"
+                    estado: "PENDIENTE"
+                    valoracion: 0
+                    duracionEstimada: 90
+                    recordatorioActivo: true
+                    clienteId: 2
+                    inmuebleId: 10
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '409':
+          description: Conflict
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Conflict'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+
+  /visitas/{id}:
+    get:
+      summary: Listar visita por id
+      description: |
+        Devuelve una sola visita por id
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID de visita
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisitaOutDto'
+              examples:
+                vis1:
+                  summary: Visita Pendiente
+                  value:
+                    id: 1
+                    fechaHora: "2025-01-01T10:00:00Z"
+                    estado: "PENDIENTE"
+                    valoracion: 0
+                    nombreCliente: "Ana"
+                    tituloInmueble: "Piso A"
+                vis2:
+                  summary: Visita Finalizada
+                  value:
+                    id: 3
+                    fechaHora: "2024-12-01T10:00:00Z"
+                    estado: "CONFIRMADA"
+                    valoracion: 5
+                    nombreCliente: "Luis"
+                    tituloInmueble: "Piso B"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
+
+    put:
+      summary: Actualizar visita
+      description: |
+        Actualiza los datos de una visita
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/VisitaInDto'
+            examples:
+              confirmar:
+                summary: Confirmar Visita
+                value:
+                  fechaHora: "2025-01-01T10:00:00Z"
+                  comentarios: "Todo ok"
+                  estado: "CONFIRMADA"
+                  valoracion: 0
+                  duracionEstimada: 30
+                  recordatorioActivo: false
+                  clienteId: 1
+                  inmuebleId: 10
+              cancelar:
+                summary: Cancelar Visita
+                value:
+                  fechaHora: "2025-01-01T10:00:00Z"
+                  comentarios: "Cliente no puede asistir"
+                  estado: "CANCELADA"
+                  valoracion: 0
+                  duracionEstimada: 30
+                  recordatorioActivo: false
+                  clienteId: 1
+                  inmuebleId: 10
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/VisitaOutDto'
+              examples:
+                confirmar:
+                  summary: Visita confirmada
+                  value:
+                    fechaHora: "2025-01-01T10:00:00Z"
+                    comentarios: "Todo ok"
+                    estado: "CONFIRMADA"
+                    valoracion: 0
+                    duracionEstimada: 30
+                    recordatorioActivo: false
+                    clienteId: 1
+                    inmuebleId: 10
+                cancelar:
+                  summary: Visita cancelada
+                  value:
+                    fechaHora: "2025-01-01T10:00:00Z"
+                    comentarios: "Cliente no puede asistir"
+                    estado: "CANCELADA"
+                    valoracion: 0
+                    duracionEstimada: 30
+                    recordatorioActivo: false
+                    clienteId: 1
+                    inmuebleId: 10
+        '400':
+          description: Bad request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+    delete:
+      summary: Eliminar visita
+      description: |
+        Elimina los datos de una visita
+      responses:
+        '204':
+          description: Eliminado correctamente
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+
+components:
+  schemas:
+    #  SCHEMAS AGENCIA (Agencia y AgenciaOutDto son iguales)
+    Agencia:
+      allOf:
+        - $ref: '#/components/schemas/AgenciaOutDto'
+    AgenciaInDto:
+      type: object
+      required:
+        - nombre
+        - direccion
+      properties:
+        nombre:
+          type: string
+        direccion:
+          type: string
+        facturacionAnual:
+          type: number
+          format: float
+        codigoPostal:
+          type: integer
+        abiertoSabados:
+          type: boolean
+        fechaFundacion:
+          type: string
+          format: date
+    AgenciaOutDto:
+      allOf:
+        - $ref: '#/components/schemas/AgenciaInDto'
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+
+
+    # SCHEMAS PROPIETARIO (Propietario y propietarioOutDto son iguales)
+    Propietario:
+      allOf:
+        - $ref: '#/components/schemas/PropietarioOutDto'
+    PropietarioInDto:
+      type: object
+      required:
+        - dni
+        - nombre
+        - telefono
+      properties:
+        dni:
+          type: string
+        nombre:
+          type: string
+        telefono:
+          type: string
+        comision:
+          type: number
+          format: float
+        esEmpresa:
+          type: boolean
+        fechaAlta:
+          type: string
+          format: date
+    PropietarioOutDto:
+      allOf:
+        - $ref: '#/components/schemas/PropietarioInDto'
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+
+
+    # SCHEMAS INMUEBLE ( InmuebleOutDto no muestra latitud, longitud ni fecha de publicación)
+    Inmueble:
+      allOf:
+        - $ref: '#/components/schemas/InmuebleInDto'
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    InmuebleInDto:
+      type: object
+      required:
+        - titulo
+        - precio
+        - latitud
+        - longitud
+        - agenciaId
+        - propietarioId
+      properties:
+        titulo:
+          type: string
+        precio:
+          type: number
+          format: float
+        metros:
+          type: integer
+        latitud:
+          type: number
+          format: double
+        longitud:
+          type: number
+          format: double
+        ascensor:
+          type: boolean
+        fechaPublicacion:
+          type: string
+          format: date
+        agenciaId:
+          type: integer
+          description: FK Agencia
+        propietarioId:
+          type: integer
+          description: FK Propietario
+    InmuebleOutDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        titulo:
+          type: string
+        precio:
+          type: number
+          format: float
+        metros:
+          type: integer
+        ascensor:
+          type: boolean
+        nombreAgencia:
+          type: string
+        nombrePropietario:
+          type: string
+
+
+    # SCHEMAS CLIENTE (ClienteOutDto no muestra password ni presupuesto)
+    Cliente:
+      allOf:
+        - $ref: '#/components/schemas/ClienteInDto'
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    ClienteInDto:
+      type: object
+      required:
+        - email
+        - password
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        telefono:
+          type: string
+        presupuestoMaximo:
+          type: number
+          format: float
+        edad:
+          type: integer
+        fechaAlta:
+          type: string
+          format: date
+        suscrito:
+          type: boolean
+    ClienteOutDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+        telefono:
+          type: string
+        edad:
+          type: integer
+        suscrito:
+          type: boolean
+
+
+    # SCHEMAS VISITA (VisitaOutDto no muestra comentarios, duracionEstimada y recordatorioActivo)
+    Visita:
+      allOf:
+        - $ref: '#/components/schemas/VisitaInDto'
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+    VisitaInDto:
+      type: object
+      required:
+        - fechaHora
+        - clienteId
+        - inmuebleId
+      properties:
+        fechaHora:
+          type: string
+          format: date-time
+        comentarios:
+          type: string
+        estado:
+          type: string
+          enum: [PENDIENTE, CONFIRMADA, CANCELADA]
+        valoracion:
+          type: number
+          format: float
+          minimum: 0
+          maximum: 5
+        duracionEstimada:
+          type: integer
+        recordatorioActivo:
+          type: boolean
+        clienteId:
+          type: integer
+        inmuebleId:
+          type: integer
+    VisitaOutDto:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        fechaHora:
+          type: string
+          format: date-time
+        estado:
+          type: string
+        valoracion:
+          type: number
+        nombreCliente:
+          type: string
+        tituloInmueble:
+          type: string
+
+
+    ErrorResponse:
+      type: object
+      properties:
+        code:
+          type: number
+          format: int
+          description: Codigo de estado
+        message:
+          type: string
+          description: Mensaje de error
+        title:
+          type: string
+          description: Tipo de error
+    InternalServerError:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 500
+        message: Internal server error
+        title: internal-server-error
+    BadRequest:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 400
+        message: Validation error
+        title: bad-request
+    NotFound:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 404
+        message: Resource not found
+        title: resource-not-found
+    Conflict:
+      allOf:
+        - $ref: '#/components/schemas/ErrorResponse'
+      example:
+        code: 409
+        message: Conflict
+        title: conflict
