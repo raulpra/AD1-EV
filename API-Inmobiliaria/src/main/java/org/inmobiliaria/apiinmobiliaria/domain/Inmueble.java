@@ -1,6 +1,7 @@
 package org.inmobiliaria.apiinmobiliaria.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -14,7 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "Inmueble")
-@Table
+@Table(name = "inmueble")
 public class Inmueble {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -26,11 +27,12 @@ public class Inmueble {
     private String titulo;
 
     @Column
-    @NotNull ()
+    @NotNull (message = "El precio es obligatorio")
     @Positive (message = "El precio tiene que ser positivo")
     private Float precio;
 
     @Column
+    @NotNull(message ="Los metros son obligatorios")
     @Min(value = 1, message = "El valor tiene que ser mayor que 1")
     private Integer metros;
 
@@ -43,9 +45,12 @@ public class Inmueble {
     private Double longitud;
 
     @Column
+    @NotNull(message = "Debe indicar si tiene ascensor")
     private Boolean ascensor;
 
     @Column(name = "fecha_publicacion")
+    @NotNull(message = "La fecha es obligatoria")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaPublicacion;
 
     // Relación N:1 con Agencia

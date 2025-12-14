@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "Visita")
-@Table
+@Table(name = "visita")
 public class Visita {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,6 +27,7 @@ public class Visita {
     private String comentarios;
 
     @Column
+    @NotBlank(message = "El estado es obligatorio")
     @Pattern(regexp = "PENDIENTE|CONFIRMADA|CANCELADA")
     private String estado = "PENDIENTE";
 
@@ -38,6 +39,7 @@ public class Visita {
     private Integer duracionEstimada;
 
     @Column(name = "recordatorio_activo")
+    @NotNull(message = "Debe indicar si el recordatorio está activo")
     private Boolean recordatorioActivo;
 
     // Relación N:1 con Cliente

@@ -1146,7 +1146,7 @@ paths:
 
   /visitas:
     get:
-      summary: Listar visitas con filtros
+      summary: Listar visitas
       description: |
         Devuelve una lista con todas las visitas
         
@@ -1214,7 +1214,7 @@ paths:
                 $ref: '#/components/schemas/InternalServerError'
 
     post:
-      summary: Agendar visita
+      summary: Crear visita
       description: Registra una nueva visita
       requestBody:
         description: Datos de la nueva visita
