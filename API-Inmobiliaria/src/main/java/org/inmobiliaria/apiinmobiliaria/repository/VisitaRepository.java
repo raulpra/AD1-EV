@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface VisitaRepository extends CrudRepository<Visita,Long> {
 
-    List<Visita> findByFilter(String estado, LocalDateTime fechaDesde, Float valoracionMin);
+    List<Visita> findByEstadoAndFechaHoraGreaterThanEqualAndValoracionGreaterThanEqual(String estado, LocalDateTime fechaDesde, Float valoracionMin);
     List<Visita> findAll();
 }

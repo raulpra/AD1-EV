@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface InmuebleRepository extends CrudRepository<Inmueble, Long> {
 
-    List<Inmueble> findByFilter(Float precioMax, Integer metrosMin, Boolean ascensor);
+    List<Inmueble> findByPrecioLessThanEqualAndMetrosGreaterThanEqualAndAscensor(Float precioMax, Integer metrosMin, Boolean ascensor);
     List<Inmueble> findAll();
 }
