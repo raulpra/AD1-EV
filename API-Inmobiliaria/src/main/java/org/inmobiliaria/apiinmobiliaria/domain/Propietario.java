@@ -1,6 +1,7 @@
 package org.inmobiliaria.apiinmobiliaria.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -26,26 +27,32 @@ public class Propietario {
     private long id;
 
     @Column
-    @NotNull
+    @NotBlank(message = "El DNI es obligatorio")
     @Size(max = 20)
     private String dni;
 
-    @NotBlank
+    @Column
+    @NotBlank(message = "El nombre es obligatorio")
     @Size(max = 100)
     private String nombre;
 
-    @NotBlank
-    @Size(max = 15) // Coincide con tu SQL VARCHAR(15)
+    @Column
+    @NotBlank(message = "El teléfono es obligatorio")
+    @Size(max = 15)
     private String telefono;
 
     @Column
-    @Min(value = 0, message= "el valor tiene que ser positivo" )
+    @NotNull(message = "La comisión es obligatoria")
+    @Min(value = 0, message= "El valor tiene que ser positivo" )
     private Float comision;
 
     @Column(name = "es_empresa")
+    @NotNull(message = "Debe indicarse si es empresa")
     private Boolean esEmpresa;
 
     @Column(name = "fecha_alta")
+    @NotNull(message = "La fecha de alta es obligatoria")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaAlta;
 
     // Relación: Un propietario tiene muchos inmuebles

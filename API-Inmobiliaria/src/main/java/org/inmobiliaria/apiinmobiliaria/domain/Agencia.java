@@ -31,20 +31,25 @@ public class Agencia {
     private String nombre;
 
     @Column
+    @NotBlank(message = "La dirección es obligatoria")
     @Size(max = 200)
     private String direccion;
 
     @Column(name = "facturacion_anual")
+    @NotNull(message = "La facturación es obligatoria")
     @Min(value=0, message="la facturación debe ser positiva")
     private Float facturacionAnual;
 
     @Column(name = "codigo_postal")
+    @NotNull(message = "El código postal es obligatorio")
     private Integer codigoPostal;
 
     @Column(name = "abierto_sabados")
+    @NotNull(message = "Debe indicarse si abre sábados")
     private Boolean abiertoSabados;
 
     @Column(name = "fecha_fundacion")
+    @NotNull(message = "La fecha de fundación es obligatoria")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate fechaFundacion;
 
