@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 
-    List<Cliente> findByFilter(String email, String telefono, Boolean suscrito);
+    List<Cliente> findByEmailContainingAndTelefonoAndSuscrito(String email, String telefono, Boolean suscrito);
     List<Cliente> findAll();
 }
