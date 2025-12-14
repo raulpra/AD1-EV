@@ -1,9 +1,15 @@
 package org.inmobiliaria.apiinmobiliaria.service;
 
+import org.inmobiliaria.apiinmobiliaria.domain.Cliente;
+import org.inmobiliaria.apiinmobiliaria.domain.Inmueble;
 import org.inmobiliaria.apiinmobiliaria.domain.Visita;
 import org.inmobiliaria.apiinmobiliaria.dto.VisitaInDto;
 import org.inmobiliaria.apiinmobiliaria.dto.VisitaOutDto;
+import org.inmobiliaria.apiinmobiliaria.exception.ClienteNotFoundException;
+import org.inmobiliaria.apiinmobiliaria.exception.InmuebleNotFoundException;
 import org.inmobiliaria.apiinmobiliaria.exception.VisitaNotFoundException;
+import org.inmobiliaria.apiinmobiliaria.repository.ClienteRepository;
+import org.inmobiliaria.apiinmobiliaria.repository.InmuebleRepository;
 import org.inmobiliaria.apiinmobiliaria.repository.VisitaRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -20,11 +26,35 @@ public class VisitaService {
     private VisitaRepository visitaRepository;
 
     @Autowired
+    private ClienteRepository clienteRepository;
+
+    @Autowired
+    private InmuebleRepository inmuebleRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
     // ADD
-    public Visita add(Visita visita) {
-        return visitaRepository.save(visita);
+    public VisitaOutDto add(VisitaInDto visitaInDto) {
+        // 1. Buscamos el Cliente por su ID
+        Cliente cliente = clienteRepository.findById(visitaInDto.getClienteId())
+                .orElseThrow(() -> new ClienteNotFoundException("El cliente con ID " + visitaInDto.getClienteId() + " no existe"));
+
+        // 2. Buscamos el Inmueble por su ID
+        Inmueble inmueble = inmuebleRepository.findById(visitaInDto.getInmuebleId())
+                .orElseThrow(() -> new InmuebleNotFoundException("El inmueble con ID " + visitaInDto.getInmuebleId() + " no existe"));
+
+        // 3. Creamos la Visita y mapeamos los datos básicos (fecha, comentario, etc.)
+        Visita visita = new Visita();
+        modelMapper.map(visitaInDto, visita);
+
+        // 4. ASIGNAMOS LAS RELACIONES
+        visita.setCliente(cliente);
+        visita.setInmueble(inmueble);
+
+        // 5. Guardamos y devolvemos DTO
+        Visita visitaGuardada = visitaRepository.save(visita);
+        return modelMapper.map(visitaGuardada, VisitaOutDto.class);
     }
 
     // DELETE
@@ -46,7 +76,7 @@ public class VisitaService {
                     estado, fechaDesde, valoracionMin
             );
         } else {
-            visitas = visitas = visitaRepository.findAll();
+            visitas = visitaRepository.findAll();
         }
 
         return modelMapper.map(visitas, new TypeToken<List<VisitaOutDto>>() {}.getType());

@@ -1,10 +1,16 @@
 package org.inmobiliaria.apiinmobiliaria.service;
 
+import org.inmobiliaria.apiinmobiliaria.domain.Agencia;
 import org.inmobiliaria.apiinmobiliaria.domain.Inmueble;
+import org.inmobiliaria.apiinmobiliaria.domain.Propietario;
 import org.inmobiliaria.apiinmobiliaria.dto.InmuebleInDto;
 import org.inmobiliaria.apiinmobiliaria.dto.InmuebleOutDto;
+import org.inmobiliaria.apiinmobiliaria.exception.AgenciaNotFoundException;
 import org.inmobiliaria.apiinmobiliaria.exception.InmuebleNotFoundException;
+import org.inmobiliaria.apiinmobiliaria.exception.PropietarioNotFoundException;
+import org.inmobiliaria.apiinmobiliaria.repository.AgenciaRepository;
 import org.inmobiliaria.apiinmobiliaria.repository.InmuebleRepository;
+import org.inmobiliaria.apiinmobiliaria.repository.PropietarioRepository;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +25,36 @@ public class InmuebleService {
     private InmuebleRepository inmuebleRepository;
 
     @Autowired
+    private AgenciaRepository agenciaRepository;
+
+    @Autowired
+    private PropietarioRepository propietarioRepository;
+
+    @Autowired
     private ModelMapper modelMapper;
 
-    // ADD (Recibe Entidad)
-    public Inmueble add(Inmueble inmueble) {
-        return inmuebleRepository.save(inmueble);
-    }
+    // ADD
+    public InmuebleOutDto add(InmuebleInDto inmuebleInDto) {
+        // 1. Buscamos la Agencia por su ID
+        Agencia agencia = agenciaRepository.findById(inmuebleInDto.getAgenciaId())
+                .orElseThrow(() -> new AgenciaNotFoundException("La agencia con ID " + inmuebleInDto.getAgenciaId() + " no existe"));
 
+        // 2. Buscamos el Propietario por su ID
+        Propietario propietario = propietarioRepository.findById(inmuebleInDto.getPropietarioId())
+                .orElseThrow(() -> new PropietarioNotFoundException("El propietario con ID " + inmuebleInDto.getPropietarioId() + " no existe"));
+
+        // 3. Creamos el Inmueble y mapeamos los datos básicos (precio, metros, etc.)
+        Inmueble inmueble = new Inmueble();
+        modelMapper.map(inmuebleInDto, inmueble);
+
+        // 4. ASIGNAMOS LAS RELACIONES
+        inmueble.setAgencia(agencia);
+        inmueble.setPropietario(propietario);
+
+        // 5. Guardamos y devolvemos DTO
+        Inmueble inmuebleGuardado = inmuebleRepository.save(inmueble);
+        return modelMapper.map(inmuebleGuardado, InmuebleOutDto.class);
+    }
     // DELETE
     public void delete(long id) throws InmuebleNotFoundException {
         Inmueble inmueble = inmuebleRepository.findById(id)
