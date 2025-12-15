@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface PropietarioRepository  extends CrudRepository<Propietario,Long> {
 
-    List<Propietario> findByDniAndNombreContainingAndEsEmpresa(String dni, String nombre, Boolean esEmpresa);
+    List<Propietario> findByDniContainingAndNombreContainingAndEsEmpresa(String dni, String nombre, Boolean esEmpresa);
     List<Propietario> findAll();
 }

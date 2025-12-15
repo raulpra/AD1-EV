@@ -54,7 +54,7 @@ public class Agencia {
     private LocalDate fechaFundacion;
 
     // Relación: Una agencia tiene muchos inmuebles
-    @OneToMany(mappedBy = "agencia")
+    @OneToMany(mappedBy = "agencia", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Inmueble> inmuebles;
 }

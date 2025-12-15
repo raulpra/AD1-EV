@@ -64,7 +64,16 @@ public class Inmueble {
     private Propietario propietario;
 
     // Relación 1:N con Visitas
-    @OneToMany(mappedBy = "inmueble")
+    @OneToMany(mappedBy = "inmueble", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Visita> visitas;
+
+    public Long getAgenciaId() {
+        return (this.agencia != null) ? this.agencia.getId() : null;
+    }
+
+    // Esto permite que ModelMapper encuentre "propietarioId" automáticamente
+    public Long getPropietarioId() {
+        return (this.propietario != null) ? this.propietario.getId() : null;
+    }
 }

@@ -56,7 +56,7 @@ public class Propietario {
     private LocalDate fechaAlta;
 
     // Relación: Un propietario tiene muchos inmuebles
-    @OneToMany(mappedBy = "propietario")
+    @OneToMany(mappedBy = "propietario", cascade = CascadeType.ALL)
     @JsonBackReference
     private List<Inmueble> inmuebles;
 }

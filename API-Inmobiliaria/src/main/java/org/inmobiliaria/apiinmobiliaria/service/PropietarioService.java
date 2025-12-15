@@ -43,7 +43,7 @@ public class PropietarioService {
         if (hayFiltros) {
             // Llama al método del repositorio que definimos con JPA estándar
             // Al ser AND, si uno es null aquí, la búsqueda será estricta
-            propietarios = propietarioRepository.findByDniAndNombreContainingAndEsEmpresa(
+            propietarios = propietarioRepository.findByDniContainingAndNombreContainingAndEsEmpresa(
                     dni, nombre, esEmpresa
             );
         } else {
