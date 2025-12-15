@@ -9,6 +9,6 @@ import java.util.List;
 @Repository
 public interface AgenciaRepository extends CrudRepository<Agencia, Long> {
 
-    List<Agencia> findByNombreContainingAndCodigoPostalAndAbiertoSabados(String nombre, Integer codigoPostal, Boolean abiertoSabados);
+    List<Agencia> findByNombreContainingIgnoreCaseAndCodigoPostalAndAbiertoSabados(String nombre, Integer codigoPostal, Boolean abiertoSabados);
     List<Agencia> findAll();
 }

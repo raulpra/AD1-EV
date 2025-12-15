@@ -56,7 +56,7 @@ public class Cliente {
     private Boolean suscrito;
 
     // Relación 1:N con Visitas
-    @OneToMany(mappedBy = "cliente")
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
     @ToString.Exclude
     private List<Visita> visitas;
 }

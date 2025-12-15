@@ -43,7 +43,7 @@ public class AgenciaService {
         if (hayFiltros) {
             // aquí debes pasar LOS 3 parámetros.
             // Si uno es null, la búsqueda podría no devolver nada.
-            agencias = agenciaRepository.findByNombreContainingAndCodigoPostalAndAbiertoSabados(
+            agencias = agenciaRepository.findByNombreContainingIgnoreCaseAndCodigoPostalAndAbiertoSabados(
                     nombre, codigoPostal, abiertoSabados
             );
         } else {

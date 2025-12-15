@@ -51,4 +51,12 @@ public class Visita {
     @ManyToOne
     @JoinColumn(name = "inmueble_id")
     private Inmueble inmueble;
+
+    public Long getClienteId() {
+        return (this.cliente != null) ? this.cliente.getId() : null;
+    }
+
+    public Long getInmuebleId() {
+        return (this.inmueble != null) ? this.inmueble.getId() : null;
+    }
 }
