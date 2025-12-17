@@ -11,4 +11,6 @@ public interface ClienteRepository extends CrudRepository<Cliente, Long> {
 
     List<Cliente> findByEmailContainingAndTelefonoContainingAndSuscrito(String email, String telefono, Boolean suscrito);
     List<Cliente> findAll();
+
+    String telefono(String telefono);
 }
