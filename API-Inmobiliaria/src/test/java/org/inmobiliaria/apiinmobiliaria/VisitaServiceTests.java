@@ -48,9 +48,8 @@ public class VisitaServiceTests {
     @Mock
     private ModelMapper modelMapper;
 
-    // ----------------------------------------------------------------
+
     // TEST FIND ALL (Sin filtros)
-    // ----------------------------------------------------------------
     @Test
     public void testFindAll() {
         List<Visita> mockLista = List.of(new Visita());
@@ -65,9 +64,7 @@ public class VisitaServiceTests {
         verify(visitaRepository).findAll();
     }
 
-    // ----------------------------------------------------------------
-    // TEST FIND ALL (Con filtros: Estado, Fecha, Valoracion)
-    // ----------------------------------------------------------------
+    // TEST FIND ALL (Con filtros)
     @Test
     public void testFindAllWithFilters() {
         List<Visita> mockLista = List.of(new Visita());
@@ -77,7 +74,6 @@ public class VisitaServiceTests {
         LocalDateTime fecha = LocalDateTime.now();
         Float valoracion = 4.0f;
 
-        // Verifica que tu Repo tenga este método exacto
         when(visitaRepository.findByEstadoAndFechaHoraGreaterThanEqualAndValoracionGreaterThanEqual(estado, fecha, valoracion))
                 .thenReturn(mockLista);
 
@@ -89,9 +85,7 @@ public class VisitaServiceTests {
         verify(visitaRepository).findByEstadoAndFechaHoraGreaterThanEqualAndValoracionGreaterThanEqual(estado, fecha, valoracion);
     }
 
-    // ----------------------------------------------------------------
     // TEST FIND BY ID
-    // ----------------------------------------------------------------
     @Test
     public void testFindById() throws VisitaNotFoundException {
         Long id = 1L;
@@ -112,9 +106,7 @@ public class VisitaServiceTests {
         assertThrows(VisitaNotFoundException.class, () -> visitaService.findById(99L));
     }
 
-    // ----------------------------------------------------------------
     // TEST ADD (DTO -> DTO + Relaciones)
-    // ----------------------------------------------------------------
     @Test
     public void testAdd() {
         // Datos de entrada
@@ -132,7 +124,7 @@ public class VisitaServiceTests {
         when(clienteRepository.findById(10L)).thenReturn(Optional.of(mockCliente));
         when(inmuebleRepository.findById(20L)).thenReturn(Optional.of(mockInmueble));
 
-        // Strict stubbing: le decimos que ignore el mapeo void
+        // Le decimos que ignore el mapeo void
         doNothing().when(modelMapper).map(eq(inDto), any(Visita.class));
 
         when(visitaRepository.save(any(Visita.class))).thenReturn(guardada);
@@ -155,9 +147,7 @@ public class VisitaServiceTests {
         assertThrows(ClienteNotFoundException.class, () -> visitaService.add(inDto));
     }
 
-    // ----------------------------------------------------------------
     // TEST MODIFY
-    // ----------------------------------------------------------------
     @Test
     public void testModify() throws VisitaNotFoundException {
         Long id = 1L;
@@ -189,9 +179,7 @@ public class VisitaServiceTests {
         verify(visitaRepository, never()).save(any());
     }
 
-    // ----------------------------------------------------------------
     // TEST DELETE
-    // ----------------------------------------------------------------
     @Test
     public void testDelete() throws VisitaNotFoundException {
         Long id = 1L;

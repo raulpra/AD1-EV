@@ -35,41 +35,38 @@ public class PropietarioServiceTests {
     @Mock
     private ModelMapper modelMapper;
 
-    // ----------------------------------------------------------------
+
     // TEST FIND ALL (Sin filtros)
-    // ----------------------------------------------------------------
     @Test
     public void testFindAll() {
-        // 1. Entities
+        // Entities
         List<Propietario> mockLista = List.of(
                 new Propietario(1L, "123A", "Juan", "600111", 5.0f, false, LocalDate.now(), null),
                 new Propietario(2L, "456B", "Empresa SL", "600222", 10.0f, true, LocalDate.now(), null)
         );
 
-        // 2. DTOs
+        // DTOs
         List<PropietarioOutDto> mockOutDtos = List.of(
                 new PropietarioOutDto(1L, "123A", "Juan", "600111", 5.0f, false, LocalDate.now()),
                 new PropietarioOutDto(2L, "456B", "Empresa SL", "600222", 10.0f, true, LocalDate.now())
         );
 
-        // 3. Mocking
+        // Mocking
         when(propietarioRepository.findAll()).thenReturn(mockLista);
         when(modelMapper.map(mockLista, new TypeToken<List<PropietarioOutDto>>() {}.getType()))
                 .thenReturn(mockOutDtos);
 
-        // 4. Ejecución
+        // Ejecución
         List<PropietarioOutDto> resultado = propietarioService.findAll(null, null, null);
 
-        // 5. Aserciones
+        // Aserciones
         assertEquals(2, resultado.size());
         assertEquals("Juan", resultado.get(0).getNombre());
 
         verify(propietarioRepository).findAll();
     }
 
-    // ----------------------------------------------------------------
     // TEST FIND ALL (Con filtros)
-    // ----------------------------------------------------------------
     @Test
     public void testFindAllWithFilters() {
         List<Propietario> mockLista = List.of(
@@ -83,7 +80,6 @@ public class PropietarioServiceTests {
         String nombre = "Juan";
         Boolean esEmpresa = false;
 
-        // Asegúrate de que este método coincida con tu Repo
         when(propietarioRepository.findByDniContainingAndNombreContainingAndEsEmpresa(dni, nombre, esEmpresa))
                 .thenReturn(mockLista);
 
@@ -96,9 +92,7 @@ public class PropietarioServiceTests {
         verify(propietarioRepository).findByDniContainingAndNombreContainingAndEsEmpresa(dni, nombre, esEmpresa);
     }
 
-    // ----------------------------------------------------------------
     // TEST FIND BY ID
-    // ----------------------------------------------------------------
     @Test
     public void testFindById() throws PropietarioNotFoundException {
         Propietario mockEntity = new Propietario(1L, "123A", "Juan", "600", 5f, false, LocalDate.now(), null);
@@ -121,16 +115,14 @@ public class PropietarioServiceTests {
         });
     }
 
-    // ----------------------------------------------------------------
     // TEST ADD (Entity -> Entity)
-    // ----------------------------------------------------------------
     @Test
     public void testAdd() {
         // ID 0L porque es primitivo long y entrada nueva
         Propietario input = new Propietario(0L, "111A", "Nuevo", "666", 3f, false, LocalDate.now(), null);
         Propietario guardado = new Propietario(1L, "111A", "Nuevo", "666", 3f, false, LocalDate.now(), null);
 
-        // No usamos mapper aquí porque tu servicio recibe y devuelve entidad directamente
+        // No usamos mapper aquí porque el servicio recibe y devuelve entidad directamente
         when(propietarioRepository.save(input)).thenReturn(guardado);
 
         Propietario resultado = propietarioService.add(input);
@@ -141,9 +133,7 @@ public class PropietarioServiceTests {
         verify(propietarioRepository).save(input);
     }
 
-    // ----------------------------------------------------------------
     // TEST MODIFY (DTO -> DTO)
-    // ----------------------------------------------------------------
     @Test
     public void testModify() throws PropietarioNotFoundException {
         Long id = 1L;
@@ -182,9 +172,7 @@ public class PropietarioServiceTests {
         verify(propietarioRepository, never()).save(any());
     }
 
-    // ----------------------------------------------------------------
     // TEST DELETE
-    // ----------------------------------------------------------------
     @Test
     public void testDelete() throws PropietarioNotFoundException {
         Long id = 1L;

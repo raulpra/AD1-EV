@@ -47,9 +47,8 @@ public class InmuebleServiceTests {
     @Mock
     private ModelMapper modelMapper;
 
-    // ----------------------------------------------------------------
+
     // TEST FIND ALL (Sin filtros)
-    // ----------------------------------------------------------------
     @Test
     public void testFindAll() {
         // Datos simulados
@@ -69,9 +68,7 @@ public class InmuebleServiceTests {
         verify(inmuebleRepository).findAll();
     }
 
-    // ----------------------------------------------------------------
-    // TEST FIND ALL (Con filtros: Precio, Metros, Ascensor)
-    // ----------------------------------------------------------------
+    // TEST FIND ALL (Con filtros)
     @Test
     public void testFindAllWithFilters() {
         List<Inmueble> mockLista = List.of(new Inmueble());
@@ -81,7 +78,6 @@ public class InmuebleServiceTests {
         Integer metrosMin = 90;
         Boolean ascensor = true;
 
-        // Asegúrate de que este método coincida con tu Repo
         when(inmuebleRepository.findByPrecioLessThanEqualAndMetrosGreaterThanEqualAndAscensor(precioMax, metrosMin, ascensor))
                 .thenReturn(mockLista);
 
@@ -94,9 +90,7 @@ public class InmuebleServiceTests {
         verify(inmuebleRepository).findByPrecioLessThanEqualAndMetrosGreaterThanEqualAndAscensor(precioMax, metrosMin, ascensor);
     }
 
-    // ----------------------------------------------------------------
     // TEST FIND BY ID
-    // ----------------------------------------------------------------
     @Test
     public void testFindById() throws InmuebleNotFoundException {
         Inmueble mockInmueble = new Inmueble(1L, "Piso", 100f, 50, 0d, 0d, false, LocalDate.now(), null, null, null);
@@ -110,9 +104,7 @@ public class InmuebleServiceTests {
         assertEquals("Piso", result.getTitulo());
     }
 
-    // ----------------------------------------------------------------
     // TEST FIND BY ID - NOT FOUND
-    // ----------------------------------------------------------------
     @Test
     public void testFindByIdNotFound() {
         Long id = 99L; // Un ID que no existe
@@ -128,41 +120,38 @@ public class InmuebleServiceTests {
         // Verificamos que se llamó al repositorio
         verify(inmuebleRepository).findById(id);
     }
-    // ----------------------------------------------------------------
+
     // TEST ADD (DTO -> DTO + Relaciones)
-    // ----------------------------------------------------------------
     @Test
     public void testAdd() {
-        // 1. Datos entrada
+        // Datos entrada
         InmuebleInDto inDto = new InmuebleInDto("Nuevo Piso", 150000f, 90, 0d, 0d, true, LocalDate.now(), 10L, 20L);
 
-        // 2. Mocks de relaciones
+        // Mocks de relaciones
         Agencia mockAgencia = new Agencia(); mockAgencia.setId(10L);
         Propietario mockPropietario = new Propietario(); mockPropietario.setId(20L);
 
-        // 3. Entidades
-        Inmueble inmuebleMapeado = new Inmueble(); // Vacío tras new
+        // Entidades
+        Inmueble inmuebleMapeado = new Inmueble();
         Inmueble inmuebleGuardado = new Inmueble(1L, "Nuevo Piso", 150000f, 90, 0d, 0d, true, LocalDate.now(), mockAgencia, mockPropietario, null);
 
-        // 4. Salida esperada
+        // Salida esperada
         InmuebleOutDto outDto = new InmuebleOutDto(1L, "Nuevo Piso", 150000f, 90, 0d, 0d, true, LocalDate.now(), 10L, 20L);
 
-        // 5. Configurar Mocks
+        // Mocks
         when(agenciaRepository.findById(10L)).thenReturn(Optional.of(mockAgencia));
         when(propietarioRepository.findById(20L)).thenReturn(Optional.of(mockPropietario));
 
-        // Strict Stubbing: Tu servicio hace new Inmueble() y luego map(dto, inmueble)
-        // Como 'inmueble' es una variable local dentro del método, Mockito no puede interceptarla fácilmente con 'eq()'.
         // Usamos any(Inmueble.class) para decirle "cuando mapees a cualquier inmueble, no hagas nada"
         doNothing().when(modelMapper).map(eq(inDto), any(Inmueble.class));
 
         when(inmuebleRepository.save(any(Inmueble.class))).thenReturn(inmuebleGuardado);
         when(modelMapper.map(inmuebleGuardado, InmuebleOutDto.class)).thenReturn(outDto);
 
-        // 6. Ejecución
+        // Ejecución
         InmuebleOutDto result = inmuebleService.add(inDto);
 
-        // 7. Verificación
+        // Verificación
         assertEquals(1L, result.getId());
         verify(agenciaRepository).findById(10L);
         verify(propietarioRepository).findById(20L);
@@ -179,9 +168,7 @@ public class InmuebleServiceTests {
         assertThrows(AgenciaNotFoundException.class, () -> inmuebleService.add(inDto));
     }
 
-    // ----------------------------------------------------------------
     // TEST MODIFY (DTO -> DTO)
-    // ----------------------------------------------------------------
     @Test
     public void testModify() throws InmuebleNotFoundException {
         Long id = 1L;
@@ -206,13 +193,11 @@ public class InmuebleServiceTests {
         verify(inmuebleRepository).save(existente);
     }
 
-    // ----------------------------------------------------------------
     // TEST MODIFY - NOT FOUND
-    // ----------------------------------------------------------------
     @Test
     public void testModifyNotFound() {
         Long id = 99L;
-        InmuebleInDto inDto = new InmuebleInDto(); // Los datos dan igual porque va a fallar antes
+        InmuebleInDto inDto = new InmuebleInDto();
 
         // Simulamos que no encuentra el inmueble
         when(inmuebleRepository.findById(id)).thenReturn(Optional.empty());
@@ -222,13 +207,11 @@ public class InmuebleServiceTests {
             inmuebleService.modify(id, inDto);
         });
 
-        // IMPORTANTE: Aseguramos que NUNCA se intentó guardar nada
+        // Aseguramos que NUNCA se intentó guardar nada
         verify(inmuebleRepository, never()).save(any());
     }
 
-    // ----------------------------------------------------------------
     // TEST DELETE
-    // ----------------------------------------------------------------
     @Test
     public void testDelete() throws InmuebleNotFoundException {
         Long id = 1L;
