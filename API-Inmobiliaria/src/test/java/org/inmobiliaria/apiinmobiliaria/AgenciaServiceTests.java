@@ -35,31 +35,31 @@ public class AgenciaServiceTests {
     @Mock
     private ModelMapper modelMapper;
 
+    // TEST ADD
     @Test
     public void testFindAll() {
-        // 1. Datos simulados (Entities)
+        // Datos simulados (Entities)
         // Constructor: id, nombre, direccion, facturacion(Float), cp, sabados, fecha, listaInmuebles(null)
         List<Agencia> mockAgenciaList = List.of(
                 new Agencia(1L, "Inmobiliaria Norte", "Calle A, 1", 1000.0f, 28001, true, LocalDate.of(2010, 1, 1), null),
                 new Agencia(2L, "Inmobiliaria Sur", "Calle B, 2", 2000.0f, 28002, false, LocalDate.of(2015, 5, 5), null)
         );
 
-        // 2. Respuesta esperada (DTOs)
+        // Respuesta esperada (DTOs)
         // Constructor: id, nombre, direccion, facturacion, cp, sabados, fecha (SIN lista)
         List<AgenciaOutDto> modelMapperOut = List.of(
                 new AgenciaOutDto(1L, "Inmobiliaria Norte", "Calle A, 1", 1000.0f, 28001, true, LocalDate.of(2010, 1, 1)),
                 new AgenciaOutDto(2L, "Inmobiliaria Sur", "Calle B, 2", 2000.0f, 28002, false, LocalDate.of(2015, 5, 5))
         );
 
-        // 3. Mocking
-        // Caso sin filtros -> llama a findAll()
+        // Mocking
         when(agenciaRepository.findAll()).thenReturn(mockAgenciaList);
         when(modelMapper.map(mockAgenciaList, new TypeToken<List<AgenciaOutDto>>() {}.getType())).thenReturn(modelMapperOut);
 
-        // 4. Ejecución (pasamos null para activar la rama del "else" en tu servicio)
+        // Ejecución
         List<AgenciaOutDto> actualAgenciaList = agenciaService.findAll(null, null, null);
 
-        // 5. Aserciones
+        // Aserciones
         assertEquals(2, actualAgenciaList.size());
         assertEquals("Inmobiliaria Norte", actualAgenciaList.getFirst().getNombre());
 
@@ -68,17 +68,17 @@ public class AgenciaServiceTests {
 
     @Test
     public void testFindAllWithFilters() {
-        // 1. Entity con 'null' al final
+        // Entity con 'null' al final
         List<Agencia> mockAgenciaList = List.of(
                 new Agencia(1L, "Inmobiliaria Norte", "Calle A, 1", 1000.0f, 28001, true, LocalDate.of(2010, 1, 1), null)
         );
 
-        // 2. DTO sin lista
+        // DTO sin lista
         List<AgenciaOutDto> mockModelMapperOut = List.of(
                 new AgenciaOutDto(1L, "Inmobiliaria Norte", "Calle A, 1", 1000.0f, 28001, true, LocalDate.of(2010, 1, 1))
         );
 
-        // 3. Mocking para filtros
+        // Mocking para filtros
         String nombre = "Norte";
         Integer cp = 28001;
         Boolean sabados = true;
@@ -87,13 +87,13 @@ public class AgenciaServiceTests {
                 .thenReturn(mockAgenciaList);
         when(modelMapper.map(mockAgenciaList, new TypeToken<List<AgenciaOutDto>>() {}.getType())).thenReturn(mockModelMapperOut);
 
-        // 4. Ejecución
+        // Ejecución
         List<AgenciaOutDto> actualAgenciaList = agenciaService.findAll(nombre, cp, sabados);
 
-        // 5. Aserciones
+        // Aserciones
         assertEquals(1, actualAgenciaList.size());
 
-        // Verificamos que llamó al método con filtros y NO al findAll() genérico
+        // Verificamos que llamó al método con filtros y NO al findAll()
         verify(agenciaRepository, times(0)).findAll();
         verify(agenciaRepository, times(1)).findByNombreContainingIgnoreCaseAndCodigoPostalAndAbiertoSabados(nombre, cp, sabados);
     }
@@ -126,76 +126,67 @@ public class AgenciaServiceTests {
         verify(agenciaRepository, times(1)).findById(99L);
     }
 
-    // ----------------------------------------------------------------
-    // TEST ADD (Tu método recibe Entidad y devuelve Entidad)
-    // ----------------------------------------------------------------
+    // El método Add recibe Entidad y devuelve Entidad)
     @Test
     public void testAdd() {
-        // 1. Datos de entrada (Entidad sin ID)
+        // Datos de entrada (Entidad sin ID)
         Agencia agenciaInput = new Agencia(0, "Nueva Agencia", "Calle X", 1000f, 28000, true, LocalDate.now(), null);
 
-        // 2. Dato esperado (Entidad con ID generado)
+        // Dato esperado (Entidad con ID generado)
         Agencia agenciaGuardada = new Agencia(1L, "Nueva Agencia", "Calle X", 1000f, 28000, true, LocalDate.now(), null);
 
-        // 3. Mocking
-        // OJO: Aquí NO mockeamos modelMapper porque tu método 'add' no lo usa.
+        // Mocking
+        // Aquí NO mockeamos modelMapper porque add no lo usa.
         when(agenciaRepository.save(agenciaInput)).thenReturn(agenciaGuardada);
 
-        // 4. Ejecución
+        // Ejecución
         Agencia resultado = agenciaService.add(agenciaInput);
 
-        // 5. Aserciones
+        // Aserciones
         assertEquals(1L, resultado.getId());
         assertEquals("Nueva Agencia", resultado.getNombre());
 
         verify(agenciaRepository, times(1)).save(agenciaInput);
     }
 
-    // ----------------------------------------------------------------
-    // TEST MODIFY (Tu método recibe DTO y devuelve DTO)
-    // ----------------------------------------------------------------
+    // TEST MODIFY (este método recibe DTO y devuelve DTO)
     @Test
     public void testModify() {
         Long id = 1L;
 
-        // 1. DTO de entrada (Datos nuevos)
+        // DTO de entrada (Datos nuevos)
         AgenciaInDto inDto = new AgenciaInDto("Nombre Modificado", "Dir Modificada", 5000f, 28005, false, LocalDate.now());
 
-        // 2. Entidad existente en BD (Datos viejos)
+        // Entidad existente en BD (Datos viejos)
         Agencia agenciaExistente = new Agencia(id, "Nombre Viejo", "Dir Vieja", 1000f, 28000, true, LocalDate.now(), null);
 
-        // 3. Entidad tras guardar (Datos nuevos + ID asegurado)
+        // Entidad tras guardar (Datos nuevos + ID asegurado)
         Agencia agenciaGuardada = new Agencia(id, "Nombre Modificado", "Dir Modificada", 5000f, 28005, false, LocalDate.now(), null);
 
-        // 4. DTO de salida esperado
+        // DTO de salida esperado
         AgenciaOutDto outDto = new AgenciaOutDto(id, "Nombre Modificado", "Dir Modificada", 5000f, 28005, false, LocalDate.now());
 
-        // 5. Mocking
-        // Paso A: Encontrar la agencia
+        // Mocking
         when(agenciaRepository.findById(id)).thenReturn(Optional.of(agenciaExistente));
 
-        // --- CORRECCIÓN AQUÍ ---
-        // Paso B: Le decimos a Mockito que cuando el servicio intente volcar los datos (void), no haga nada y no se queje.
+        // Le decimos a Mockito que cuando el servicio intente volcar los datos  no haga nada y no se queje.
         doNothing().when(modelMapper).map(inDto, agenciaExistente);
 
-        // Paso C: Guardar
-        // Usamos refEq o el mismo objeto. Como el mapper es mock y no hace nada real,
-        // agenciaExistente sigue teniendo el nombre viejo en memoria, pero para el test nos vale
-        // validar que se llama al save con ese objeto.
+        // Guardar
         when(agenciaRepository.save(agenciaExistente)).thenReturn(agenciaGuardada);
 
-        // Paso D: Convertir resultado a OutDto
+        // Convertir resultado a OutDto
         when(modelMapper.map(agenciaGuardada, AgenciaOutDto.class)).thenReturn(outDto);
 
-        // 6. Ejecución
+        // Ejecución
         AgenciaOutDto resultado = agenciaService.modify(id, inDto);
 
-        // 7. Aserciones
+        // Aserciones
         assertEquals("Nombre Modificado", resultado.getNombre());
 
         // Verificamos el flujo completo
         verify(agenciaRepository).findById(id);
-        verify(modelMapper).map(inDto, agenciaExistente); // Verificamos explícitamente la llamada que fallaba
+        verify(modelMapper).map(inDto, agenciaExistente);
         verify(agenciaRepository).save(agenciaExistente);
     }
 
@@ -213,21 +204,19 @@ public class AgenciaServiceTests {
         verify(agenciaRepository, never()).save(any());
     }
 
-    // ----------------------------------------------------------------
-    // TEST DELETE (Tu método busca primero y luego borra la entidad)
-    // ----------------------------------------------------------------
+    // TEST DELETE (El método busca primero y luego borra la entidad)
     @Test
     public void testDelete() throws AgenciaNotFoundException {
         Long id = 1L;
         Agencia agenciaParaBorrar = new Agencia(id, "A Borrar", "C/ Borrar", 0f, 0, false, LocalDate.now(), null);
 
-        // 1. Mocking: Tu servicio usa findById, NO existsById
+        // Mocking
         when(agenciaRepository.findById(id)).thenReturn(Optional.of(agenciaParaBorrar));
 
-        // 2. Ejecución
+        // Ejecución
         agenciaService.delete(id);
 
-        // 3. Verificación
+        // Verificación
         verify(agenciaRepository, times(1)).findById(id);
         // OJO: Tu servicio usa delete(entidad), NO deleteById(id)
         verify(agenciaRepository, times(1)).delete(agenciaParaBorrar);
