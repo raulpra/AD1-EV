@@ -112,4 +112,11 @@ public class AgenciaController {
         ErrorResponse errorResponse = ErrorResponse.validationError(errors);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    // Endpoint JPQL: Agencias máxima facturación y sábados abierto
+    @GetMapping("/agencias/top")
+    public ResponseEntity<List<AgenciaOutDto>> getAgenciasMaximaFacturacionAndAbiertoSabados(@RequestParam Double minFacturacion) {
+        List<AgenciaOutDto> agencias = agenciaService.findAgenciasMaximaFacturacionAndAbiertoSabados(minFacturacion);
+        return ResponseEntity.ok(agencias);
+    }
 }

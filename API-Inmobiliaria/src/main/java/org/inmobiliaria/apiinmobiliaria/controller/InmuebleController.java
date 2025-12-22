@@ -96,4 +96,14 @@ public class InmuebleController {
         ErrorResponse errorResponse = ErrorResponse.validationError(errors);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    // Endpoint JPQL: Inmuebles por rango de precio
+    @GetMapping("/inmuebles/rango")
+    public ResponseEntity<List<InmuebleOutDto>> getByRango(
+            @RequestParam Double min,
+            @RequestParam Double max
+    ) {
+        List<InmuebleOutDto> inmuebles = inmuebleService.findInmueblesRangoPrecio(min, max);
+        return ResponseEntity.ok(inmuebles);
+    }
 }

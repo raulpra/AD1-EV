@@ -94,4 +94,11 @@ public class ClienteController {
         });
         return new ResponseEntity<>(ErrorResponse.validationError(errors), HttpStatus.BAD_REQUEST);
     }
+
+    // Endpoint JPQL: Clientes VIP
+    @GetMapping("/clientes/vip")
+    public ResponseEntity<List<ClienteOutDto>> getClientesVip(@RequestParam Float presupuesto) {
+        List<ClienteOutDto> clientes = clienteService.findClientesVip(presupuesto);
+        return ResponseEntity.ok(clientes);
+    }
 }
