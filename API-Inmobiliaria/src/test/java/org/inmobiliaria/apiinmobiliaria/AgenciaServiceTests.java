@@ -235,4 +235,32 @@ public class AgenciaServiceTests {
         // Aseguramos que no se llamó a borrar nada
         verify(agenciaRepository, never()).delete(any());
     }
+
+    @Test
+    public void testFindAgenciasMaximaFacturacionAndAbiertoSabados() {
+        List<Agencia> mockAgenciaList = List.of(
+                new Agencia(1L, "Inmobiliaria Top", "Calle Lujo, 1", 500000.0f, 28001, true, LocalDate.of(2015, 1, 1), null)
+        );
+
+        List<AgenciaOutDto> mockModelMapperOut = List.of(
+                new AgenciaOutDto(1L, "Inmobiliaria Top", "Calle Lujo, 1", 500000.0f, 28001, true, LocalDate.of(2015, 1, 1))
+        );
+
+        Double minFacturacion = 300000.0;
+
+        when(agenciaRepository.findAgenciasMaximaFacturacionAndAbiertoSabados(minFacturacion))
+                .thenReturn(mockAgenciaList);
+
+        when(modelMapper.map(mockAgenciaList, new TypeToken<List<AgenciaOutDto>>() {}.getType()))
+                .thenReturn(mockModelMapperOut);
+
+        List<AgenciaOutDto> actualAgenciaList = agenciaService.findAgenciasMaximaFacturacionAndAbiertoSabados(minFacturacion);
+
+        assertEquals(1, actualAgenciaList.size());
+        assertEquals("Inmobiliaria Top", actualAgenciaList.get(0).getNombre());
+
+        verify(agenciaRepository, times(0)).findAll();
+        verify(agenciaRepository, times(1)).findAgenciasMaximaFacturacionAndAbiertoSabados(minFacturacion);
+
+    }
 }

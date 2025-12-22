@@ -100,8 +100,8 @@ public class InmuebleController {
     // Endpoint JPQL: Inmuebles por rango de precio
     @GetMapping("/inmuebles/rango")
     public ResponseEntity<List<InmuebleOutDto>> getByRango(
-            @RequestParam Double min,
-            @RequestParam Double max
+            @RequestParam Float min,
+            @RequestParam Float max
     ) {
         List<InmuebleOutDto> inmuebles = inmuebleService.findInmueblesRangoPrecio(min, max);
         return ResponseEntity.ok(inmuebles);

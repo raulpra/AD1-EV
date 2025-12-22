@@ -220,4 +220,23 @@ public class AgenciaControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.delete("/agencias/" + id))
                 .andExpect(status().isNotFound());
     }
+
+    //JPQL (200 OK)
+    @Test
+    public void testGetAgenciasMaximaFacturacionAndAbiertoSabados() throws Exception {
+        Double minFacturacion = 100000d;
+        List<AgenciaOutDto> filteredList = List.of(
+                new AgenciaOutDto(1L, "Agencia Top", "Dirección", 200000f, 28000, true, LocalDate.now())
+        );
+
+        when(agenciaService.findAgenciasMaximaFacturacionAndAbiertoSabados(minFacturacion))
+                .thenReturn(filteredList);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/agencias/top")
+                        .param("minFacturacion", String.valueOf(minFacturacion))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].nombre").value("Agencia Top"));
+    }
+
 }

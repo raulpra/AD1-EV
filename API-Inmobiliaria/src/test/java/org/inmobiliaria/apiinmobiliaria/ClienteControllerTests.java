@@ -65,7 +65,8 @@ public class ClienteControllerTests {
 
         // Verificación
         String jsonResponse = result.getResponse().getContentAsString();
-        List<ClienteOutDto> responseList = objectMapper.readValue(jsonResponse, new TypeReference<>() {});
+        List<ClienteOutDto> responseList = objectMapper.readValue(jsonResponse, new TypeReference<>() {
+        });
 
         assertEquals(2, responseList.size());
         assertEquals("ana@test.com", responseList.get(0).getEmail());
@@ -129,8 +130,11 @@ public class ClienteControllerTests {
         ClienteInDto inDto = new ClienteInDto("new@test.com", "1234", "666777888", 100f, 25, LocalDate.now(), true);
 
         // Entidades intermedias y finales
-        Cliente clienteEntity = new Cliente(); clienteEntity.setEmail("new@test.com");
-        Cliente clienteGuardado = new Cliente(); clienteGuardado.setId(1L); clienteGuardado.setEmail("new@test.com");
+        Cliente clienteEntity = new Cliente();
+        clienteEntity.setEmail("new@test.com");
+        Cliente clienteGuardado = new Cliente();
+        clienteGuardado.setId(1L);
+        clienteGuardado.setEmail("new@test.com");
         ClienteOutDto outDto = new ClienteOutDto(1L, "new@test.com", "666777888", 100f, 25, true);
 
         // Mocking: Dto -> Entity -> Service -> Entity -> Dto
@@ -221,5 +225,24 @@ public class ClienteControllerTests {
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/clientes/" + id))
                 .andExpect(status().isNotFound());
+    }
+
+    //JPQL (200 OK) CLIENTES VIP
+
+    @Test
+    public void testGetClientesVip() throws Exception {
+
+        Float presupuesto = 150000f;
+        List<ClienteOutDto> mockList = List.of(
+                new ClienteOutDto(1L, "ana@test.com", "600111222", 150000f, 30, true)
+        );
+
+        when(clienteService.findClientesVip(presupuesto)).thenReturn(mockList);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/clientes/vip")
+                        .param("presupuesto", String.valueOf(presupuesto))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].email").value("ana@test.com"));
     }
 }
