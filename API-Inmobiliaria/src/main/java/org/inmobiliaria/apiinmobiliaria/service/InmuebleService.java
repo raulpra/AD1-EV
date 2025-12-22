@@ -3,6 +3,7 @@ package org.inmobiliaria.apiinmobiliaria.service;
 import org.inmobiliaria.apiinmobiliaria.domain.Agencia;
 import org.inmobiliaria.apiinmobiliaria.domain.Inmueble;
 import org.inmobiliaria.apiinmobiliaria.domain.Propietario;
+import org.inmobiliaria.apiinmobiliaria.dto.AgenciaOutDto;
 import org.inmobiliaria.apiinmobiliaria.dto.InmuebleInDto;
 import org.inmobiliaria.apiinmobiliaria.dto.InmuebleOutDto;
 import org.inmobiliaria.apiinmobiliaria.exception.AgenciaNotFoundException;
@@ -102,5 +103,11 @@ public class InmuebleService {
 
         Inmueble inmuebleGuardado = inmuebleRepository.save(inmuebleExistente);
         return modelMapper.map(inmuebleGuardado, InmuebleOutDto.class);
+    }
+
+    public List<InmuebleOutDto> findInmueblesRangoPrecio(Double min, Double max) {
+        List<Inmueble> inmuebles;
+        inmuebles = inmuebleRepository.findInmueblesRangoPrecio(min, max);
+        return modelMapper.map(inmuebles, new TypeToken<List<InmuebleOutDto>>() {}.getType());
     }
 }

@@ -77,4 +77,11 @@ public class AgenciaService {
         Agencia agenciaGuardada = agenciaRepository.save(agenciaExistente);
         return modelMapper.map(agenciaGuardada, AgenciaOutDto.class);
     }
+
+    public List<AgenciaOutDto> findAgenciasMaximaFacturacionAndAbiertoSabados(Double minFacturacion) {
+        List<Agencia> agencias;
+
+        agencias = agenciaRepository.findAgenciasMaximaFacturacionAndAbiertoSabados(minFacturacion);
+        return modelMapper.map(agencias, new TypeToken<List<AgenciaOutDto>>() {}.getType());
+    }
 }

@@ -1,6 +1,7 @@
 package org.inmobiliaria.apiinmobiliaria.service;
 
 import org.inmobiliaria.apiinmobiliaria.domain.Cliente;
+import org.inmobiliaria.apiinmobiliaria.dto.AgenciaOutDto;
 import org.inmobiliaria.apiinmobiliaria.dto.ClienteInDto;
 import org.inmobiliaria.apiinmobiliaria.dto.ClienteOutDto;
 import org.inmobiliaria.apiinmobiliaria.exception.ClienteNotFoundException;
@@ -70,5 +71,11 @@ public class ClienteService {
 
         Cliente clienteGuardado = clienteRepository.save(clienteExistente);
         return modelMapper.map(clienteGuardado, ClienteOutDto.class);
+    }
+
+    public List<ClienteOutDto> findClientesVip(Float presupuestoMinimo) {
+        List<Cliente> clientes;
+        clientes = clienteRepository.findClientesVip(presupuestoMinimo);
+        return modelMapper.map(clientes, new TypeToken<List<ClienteOutDto>>() {}.getType());
     }
 }
