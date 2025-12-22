@@ -230,4 +230,34 @@ public class InmuebleServiceTests {
         when(inmuebleRepository.findById(id)).thenReturn(Optional.empty());
         assertThrows(InmuebleNotFoundException.class, () -> inmuebleService.delete(id));
     }
+
+    //TEST
+    @Test
+    public void testFindInmueblesRangoPrecio() {
+
+        List<Inmueble> mockInmuebleList = List.of(
+                new Inmueble(1L, "Piso Rango", 150000f, 90, 40.0, -3.0, true, LocalDate.of(2023, 1, 1), null, null, null)
+        );
+
+        List<InmuebleOutDto> mockModelMapperOut = List.of(
+                new InmuebleOutDto(1L, "Piso Rango", 150000f, 90, 40.0, -3.0, true, LocalDate.of(2023, 1, 1), 1L, 1L)
+        );
+
+        Float min = 100000f;
+        Float max = 200000f;
+
+        when(inmuebleRepository.findInmueblesRangoPrecio(min, max))
+                .thenReturn(mockInmuebleList);
+
+        when(modelMapper.map(mockInmuebleList, new TypeToken<List<InmuebleOutDto>>() {}.getType()))
+                .thenReturn(mockModelMapperOut);
+
+        List<InmuebleOutDto> actualInmuebleList = inmuebleService.findInmueblesRangoPrecio(min, max);
+
+        assertEquals(1, actualInmuebleList.size());
+        assertEquals("Piso Rango", actualInmuebleList.get(0).getTitulo());
+
+        verify(inmuebleRepository, times(1)).findInmueblesRangoPrecio(min, max);
+        verify(inmuebleRepository, times(0)).findAll();
+    }
 }

@@ -105,7 +105,7 @@ public class InmuebleService {
         return modelMapper.map(inmuebleGuardado, InmuebleOutDto.class);
     }
 
-    public List<InmuebleOutDto> findInmueblesRangoPrecio(Double min, Double max) {
+    public List<InmuebleOutDto> findInmueblesRangoPrecio(Float min, Float max) {
         List<Inmueble> inmuebles;
         inmuebles = inmuebleRepository.findInmueblesRangoPrecio(min, max);
         return modelMapper.map(inmuebles, new TypeToken<List<InmuebleOutDto>>() {}.getType());

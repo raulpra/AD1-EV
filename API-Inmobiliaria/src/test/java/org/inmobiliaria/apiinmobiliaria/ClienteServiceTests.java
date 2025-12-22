@@ -55,7 +55,8 @@ public class ClienteServiceTests {
 
         // Mocking
         when(clienteRepository.findAll()).thenReturn(mockLista);
-        when(modelMapper.map(mockLista, new TypeToken<List<ClienteOutDto>>() {}.getType())).thenReturn(mockOutDtos);
+        when(modelMapper.map(mockLista, new TypeToken<List<ClienteOutDto>>() {
+        }.getType())).thenReturn(mockOutDtos);
 
         // Ejecución (Pasamos nulls asumiendo que tu servicio recibe 3 filtros, ajusta si son diferentes)
         List<ClienteOutDto> resultado = clienteService.findAll(null, null, null);
@@ -88,7 +89,8 @@ public class ClienteServiceTests {
         // Mocking
         when(clienteRepository.findByEmailContainingAndTelefonoContainingAndSuscrito(email, telefono, suscrito))
                 .thenReturn(mockLista);
-        when(modelMapper.map(mockLista, new TypeToken<List<ClienteOutDto>>() {}.getType())).thenReturn(mockOutDtos);
+        when(modelMapper.map(mockLista, new TypeToken<List<ClienteOutDto>>() {
+        }.getType())).thenReturn(mockOutDtos);
 
         // Ejecución
         List<ClienteOutDto> resultado = clienteService.findAll(email, telefono, suscrito);
@@ -158,7 +160,7 @@ public class ClienteServiceTests {
         ClienteInDto inDto = new ClienteInDto("modificado@mail.com", "newPass", "999888777", 300f, 35, LocalDate.now(), true);
 
         // Entity existente (Datos viejos)
-        Cliente existente = new Cliente(id, "viejo@mail.com", "oldPass", "000000000", 100f, 20, LocalDate.of(2000,1,1), false, null);
+        Cliente existente = new Cliente(id, "viejo@mail.com", "oldPass", "000000000", 100f, 20, LocalDate.of(2000, 1, 1), false, null);
 
         // Entity guardada (Datos nuevos + ID asegurado)
         Cliente guardado = new Cliente(id, "modificado@mail.com", "newPass", "999888777", 300f, 35, LocalDate.now(), true, null);
@@ -229,5 +231,34 @@ public class ClienteServiceTests {
         });
 
         verify(clienteRepository, never()).delete(any());
+    }
+
+    //
+    @Test
+    public void testFindClientesVip() {
+        Float presupuesto = 150000f;
+
+        List<Cliente> mockClienteList = List.of(
+                new Cliente(1L, "ana@mail.com", "1234", "600111222", 150000f, 30, LocalDate.now(), true, null)
+        );
+
+        List<ClienteOutDto> mockModelMapperOut = List.of(
+                new ClienteOutDto(1L, "ana@mail.com", "600111222", 150000f, 30, true)
+        );
+
+        when(clienteRepository.findClientesVip(presupuesto))
+                .thenReturn(mockClienteList);
+
+        when(modelMapper.map(mockClienteList, new TypeToken<List<ClienteOutDto>>() {
+        }.getType()))
+                .thenReturn(mockModelMapperOut);
+
+        List<ClienteOutDto> result = clienteService.findClientesVip(presupuesto);
+
+        assertEquals(1, result.size());
+        assertEquals("ana@mail.com", result.get(0).getEmail());
+
+        verify(clienteRepository, times(1)).findClientesVip(presupuesto);
+        verify(clienteRepository, times(0)).findAll();
     }
 }

@@ -214,4 +214,23 @@ public class InmuebleControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.delete("/inmuebles/" + id))
                 .andExpect(status().isNotFound());
     }
+
+    //JPQL ENDPOINT (200 OK)
+    @Test
+    public void testGetByRango() throws Exception {
+        Float min = 100000f;
+        Float max = 200000f;
+        List<InmuebleOutDto> mockList = List.of(
+                new InmuebleOutDto(1L, "Piso Rango", 150000f, 80, 0d, 0d, true, LocalDate.now(), 1L, 1L)
+        );
+
+        when(inmuebleService.findInmueblesRangoPrecio(min, max)).thenReturn(mockList);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/inmuebles/rango")
+                        .param("min", String.valueOf(min))
+                        .param("max", String.valueOf(max))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].titulo").value("Piso Rango"));
+    }
 }
