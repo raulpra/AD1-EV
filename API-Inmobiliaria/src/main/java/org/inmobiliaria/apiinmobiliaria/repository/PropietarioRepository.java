@@ -1,6 +1,8 @@
 package org.inmobiliaria.apiinmobiliaria.repository;
 
 import org.inmobiliaria.apiinmobiliaria.domain.Propietario;
+import org.springframework.data.jpa.repository.NativeQuery;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -11,4 +13,8 @@ public interface PropietarioRepository  extends CrudRepository<Propietario,Long>
 
     List<Propietario> findByDniContainingAndNombreContainingAndEsEmpresa(String dni, String nombre, Boolean esEmpresa);
     List<Propietario> findAll();
+
+
+    @NativeQuery(value = "SELECT * FROM propietario WHERE es_empresa = true")
+    List<Propietario> findEmpresasNativas();
 }

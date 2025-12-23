@@ -106,4 +106,10 @@ public class InmuebleController {
         List<InmuebleOutDto> inmuebles = inmuebleService.findInmueblesRangoPrecio(min, max);
         return ResponseEntity.ok(inmuebles);
     }
+
+    // SQL: Inmuebles más grandes que x metros
+    @GetMapping("/inmuebles/grandes")
+    public ResponseEntity<List<InmuebleOutDto>> getGrandesSql(@RequestParam Integer metros) {
+        return ResponseEntity.ok(inmuebleService.getGrandesSql(metros));
+    }
 }

@@ -198,4 +198,28 @@ public class PropietarioServiceTests {
 
         verify(propietarioRepository, never()).delete(any());
     }
+
+    //TEST SQL GET EMPRESAS
+    @Test
+    public void testGetEmpresasSql() {
+        List<Propietario> mockList = List.of(
+                new Propietario(1L, "B123", "Empresa SL", "911", 10f, true, LocalDate.now(), null)
+
+        );
+
+        List<PropietarioOutDto> mockOut = List.of(
+                new PropietarioOutDto(1L, "B123", "Empresa SL", "911", 10f, true, LocalDate.now())
+        );
+
+        when(propietarioRepository.findEmpresasNativas()).thenReturn(mockList);
+        when(modelMapper.map(mockList, new TypeToken<List<PropietarioOutDto>>() {}.getType()))
+                .thenReturn(mockOut);
+
+        List<PropietarioOutDto> result = propietarioService.getEmpresasSql();
+
+        assertEquals(1, result.size());
+        assertEquals("Empresa SL", result.get(0).getNombre());
+
+        verify(propietarioRepository, times(1)).findEmpresasNativas();
+    }
 }

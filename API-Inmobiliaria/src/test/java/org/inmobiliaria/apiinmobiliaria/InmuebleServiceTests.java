@@ -231,7 +231,7 @@ public class InmuebleServiceTests {
         assertThrows(InmuebleNotFoundException.class, () -> inmuebleService.delete(id));
     }
 
-    //TEST
+    //TEST JPQL
     @Test
     public void testFindInmueblesRangoPrecio() {
 
@@ -259,5 +259,29 @@ public class InmuebleServiceTests {
 
         verify(inmuebleRepository, times(1)).findInmueblesRangoPrecio(min, max);
         verify(inmuebleRepository, times(0)).findAll();
+    }
+
+    //TEST SQL GET INMUEBLES MAYOR X METROS
+    @Test
+    public void testGetGrandesSql() {
+        List<Inmueble> mockList = List.of(
+                new Inmueble(1L, "Mansión", 500000f, 500, 0d, 0d, true, LocalDate.now(), null, null, null)
+        );
+
+        List<InmuebleOutDto> mockOut = List.of(
+                new InmuebleOutDto(1L, "Mansión", 500000f, 500, 0d, 0d, true, LocalDate.now(), 1L, 1L)
+        );
+
+        Integer metros = 200;
+        when(inmuebleRepository.findInmueblesGrandesNativo(metros)).thenReturn(mockList);
+        when(modelMapper.map(mockList, new TypeToken<List<InmuebleOutDto>>() {}.getType()))
+                .thenReturn(mockOut);
+
+        List<InmuebleOutDto> result = inmuebleService.getGrandesSql(metros);
+
+        assertEquals(1, result.size());
+        assertEquals(500, result.get(0).getMetros());
+
+        verify(inmuebleRepository, times(1)).findInmueblesGrandesNativo(metros);
     }
 }

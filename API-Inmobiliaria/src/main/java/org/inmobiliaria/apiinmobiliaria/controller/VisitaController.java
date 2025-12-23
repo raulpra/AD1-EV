@@ -96,4 +96,10 @@ public class VisitaController {
         });
         return new ResponseEntity<>(ErrorResponse.validationError(errors), HttpStatus.BAD_REQUEST);
     }
+
+    // SQL GET BY VISTAS PASADAS
+    @GetMapping("/visitas/pasadas")
+    public ResponseEntity<List<VisitaOutDto>> getPasadasSql() {
+        return ResponseEntity.ok(visitaService.getPasadasSql());
+    }
 }
