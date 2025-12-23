@@ -105,9 +105,16 @@ public class InmuebleService {
         return modelMapper.map(inmuebleGuardado, InmuebleOutDto.class);
     }
 
+    // JPQL
     public List<InmuebleOutDto> findInmueblesRangoPrecio(Float min, Float max) {
         List<Inmueble> inmuebles;
         inmuebles = inmuebleRepository.findInmueblesRangoPrecio(min, max);
         return modelMapper.map(inmuebles, new TypeToken<List<InmuebleOutDto>>() {}.getType());
+    }
+
+    // SQL
+    public List<InmuebleOutDto> getGrandesSql(Integer metros) {
+        List<Inmueble> lista = inmuebleRepository.findInmueblesGrandesNativo(metros);
+        return modelMapper.map(lista, new TypeToken<List<InmuebleOutDto>>() {}.getType());
     }
 }

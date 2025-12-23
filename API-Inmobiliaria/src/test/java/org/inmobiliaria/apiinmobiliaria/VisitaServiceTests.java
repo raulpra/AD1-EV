@@ -199,4 +199,28 @@ public class VisitaServiceTests {
         when(visitaRepository.findById(id)).thenReturn(Optional.empty());
         assertThrows(VisitaNotFoundException.class, () -> visitaService.delete(id));
     }
+
+    // TEST SQL FIND CITAS PASADAS
+    @Test
+    public void testGetPasadasSql() {
+        List<Visita> mockList = List.of(
+                new Visita(1L, LocalDateTime.of(2020, 1, 1, 10, 0), "Vieja", "CONFIRMADA", 5f, 60, false, null, null)
+        );
+
+        List<VisitaOutDto> mockOut = List.of(
+                new VisitaOutDto(1L, LocalDateTime.of(2020, 1, 1, 10, 0), "Vieja", "CONFIRMADA", 5f, 60, false, 1L, 1L)
+        );
+
+        when(visitaRepository.findVisitasPasadasNativas()).thenReturn(mockList);
+        when(modelMapper.map(mockList, new TypeToken<List<VisitaOutDto>>() {}.getType()))
+                .thenReturn(mockOut);
+
+        List<VisitaOutDto> result = visitaService.getPasadasSql();
+
+        assertEquals(1, result.size());
+        assertEquals("Vieja", result.get(0).getComentarios());
+
+        verify(visitaRepository, times(1)).findVisitasPasadasNativas();
+    }
+
 }

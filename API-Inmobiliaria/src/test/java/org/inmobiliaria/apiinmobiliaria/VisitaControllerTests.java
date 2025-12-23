@@ -217,4 +217,19 @@ public class VisitaControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.delete("/visitas/" + id))
                 .andExpect(status().isNotFound());
     }
+
+    // SQL GET VISITA PASADA
+    @Test
+    public void testGetPasadasSql() throws Exception {
+        List<VisitaOutDto> mockList = List.of(
+                new VisitaOutDto(1L, LocalDateTime.of(2020, 1, 1, 10, 0), "Pasada", "CONFIRMADA", 5f, 30, false, 1L, 1L)
+        );
+
+        when(visitaService.getPasadasSql()).thenReturn(mockList);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/visitas/pasadas")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].comentarios").value("Pasada"));
+    }
 }

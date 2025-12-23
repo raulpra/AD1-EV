@@ -219,4 +219,19 @@ public class PropietarioControllerTests {
         mockMvc.perform(MockMvcRequestBuilders.delete("/propietarios/" + id))
                 .andExpect(status().isNotFound());
     }
+
+    //SQL GET BY PROPIETARIO ES EMPRESA
+    @Test
+    public void testGetEmpresasSql() throws Exception {
+        List<PropietarioOutDto> mockList = List.of(
+                new PropietarioOutDto(1L, "B123", "Empresa SL", "911", 10f, true, LocalDate.now())
+        );
+
+        when(propietarioService.getEmpresasSql()).thenReturn(mockList);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/propietarios/empresas")
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].esEmpresa").value(true));
+    }
 }

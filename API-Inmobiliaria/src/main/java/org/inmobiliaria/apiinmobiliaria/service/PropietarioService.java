@@ -75,4 +75,10 @@ public class PropietarioService {
         Propietario propietarioGuardado = propietarioRepository.save(propietarioExistente);
         return modelMapper.map(propietarioGuardado, PropietarioOutDto.class);
     }
+
+    // SQL: FIND PROPIETARIO ES EMPRESA
+    public List<PropietarioOutDto> getEmpresasSql() {
+        List<Propietario> lista = propietarioRepository.findEmpresasNativas();
+        return modelMapper.map(lista, new TypeToken<List<PropietarioOutDto>>() {}.getType());
+    }
 }

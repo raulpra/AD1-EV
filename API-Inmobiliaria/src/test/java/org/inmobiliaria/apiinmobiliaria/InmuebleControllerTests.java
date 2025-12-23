@@ -233,4 +233,21 @@ public class InmuebleControllerTests {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].titulo").value("Piso Rango"));
     }
+
+    //SQL ENDPOINT (200 OK)
+    @Test
+    public void testGetGrandesSql() throws Exception {
+        Integer metros = 200;
+        List<InmuebleOutDto> mockList = List.of(
+                new InmuebleOutDto(1L, "Gran Mansión", 900000f, 500, 0d, 0d, true, LocalDate.now(), 1L, 1L)
+        );
+
+        when(inmuebleService.getGrandesSql(metros)).thenReturn(mockList);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/inmuebles/grandes")
+                        .param("metros", String.valueOf(metros))
+                        .accept(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].metros").value(500));
+    }
 }

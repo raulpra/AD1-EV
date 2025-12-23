@@ -101,4 +101,10 @@ public class VisitaService {
         Visita visitaGuardada = visitaRepository.save(visitaExistente);
         return modelMapper.map(visitaGuardada, VisitaOutDto.class);
     }
+
+    // SQL FIND VISITAS PASADAS
+    public List<VisitaOutDto> getPasadasSql() {
+        List<Visita> lista = visitaRepository.findVisitasPasadasNativas();
+        return modelMapper.map(lista, new TypeToken<List<VisitaOutDto>>() {}.getType());
+    }
 }

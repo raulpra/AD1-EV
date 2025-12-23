@@ -102,4 +102,10 @@ public class PropietarioController {
         ErrorResponse errorResponse = ErrorResponse.validationError(errors);
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+    // SQL GET PROPIETARIO ES EMPRESA
+    @GetMapping("/propietarios/empresas")
+    public ResponseEntity<List<PropietarioOutDto>> getEmpresasSql() {
+        return ResponseEntity.ok(propietarioService.getEmpresasSql());
+    }
 }
