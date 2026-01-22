@@ -72,9 +72,10 @@ public class VisitaService {
         boolean hayFiltros = estado != null || fechaDesde != null || valoracionMin != null;
 
         if (hayFiltros) {
+            /*
             visitas = visitaRepository.findByEstadoAndFechaHoraGreaterThanEqualAndValoracionGreaterThanEqual(
-                    estado, fechaDesde, valoracionMin
-            );
+                    estado, fechaDesde, valoracionMin);*/
+            visitas = visitaRepository.findByFilter(estado, fechaDesde, valoracionMin);
         } else {
             visitas = visitaRepository.findAll();
         }

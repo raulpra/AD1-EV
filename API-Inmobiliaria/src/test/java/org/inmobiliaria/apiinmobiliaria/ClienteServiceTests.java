@@ -87,7 +87,7 @@ public class ClienteServiceTests {
         Boolean suscrito = true;
 
         // Mocking
-        when(clienteRepository.findByEmailContainingAndTelefonoContainingAndSuscrito(email, telefono, suscrito))
+        when(clienteRepository.findByFilter(email, telefono, suscrito))
                 .thenReturn(mockLista);
         when(modelMapper.map(mockLista, new TypeToken<List<ClienteOutDto>>() {
         }.getType())).thenReturn(mockOutDtos);
@@ -98,7 +98,7 @@ public class ClienteServiceTests {
         // serciones
         assertEquals(1, resultado.size());
         verify(clienteRepository, times(0)).findAll(); // Aseguramos que NO llama al genérico
-        verify(clienteRepository, times(1)).findByEmailContainingAndTelefonoContainingAndSuscrito(email, telefono, suscrito);
+        verify(clienteRepository, times(1)).findByFilter(email, telefono, suscrito);
     }
 
     // TEST FIND BY ID

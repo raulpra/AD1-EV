@@ -41,11 +41,14 @@ public class AgenciaService {
         boolean hayFiltros = nombre != null || codigoPostal != null || abiertoSabados != null;
 
         if (hayFiltros) {
-            // aquí debes pasar LOS 3 parámetros.
-            // Si uno es null, la búsqueda podría no devolver nada.
+            /* aquí debes pasar LOS 3 parámetros.
+             Si uno es null, la búsqueda podría no devolver nada.
             agencias = agenciaRepository.findByNombreContainingIgnoreCaseAndCodigoPostalAndAbiertoSabados(
-                    nombre, codigoPostal, abiertoSabados
-            );
+                    nombre, codigoPostal, abiertoSabados);*/
+
+            //con la query que hemos creado en repository ya podemos pasar el filtro que queramos
+            agencias = agenciaRepository.findByFilter(nombre, codigoPostal, abiertoSabados);
+
         } else {
             // Si no hay filtros, devolvemos todas
             agencias = agenciaRepository.findAll();

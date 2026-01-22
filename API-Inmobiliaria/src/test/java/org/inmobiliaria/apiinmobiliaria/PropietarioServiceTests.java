@@ -80,7 +80,7 @@ public class PropietarioServiceTests {
         String nombre = "Juan";
         Boolean esEmpresa = false;
 
-        when(propietarioRepository.findByDniContainingAndNombreContainingAndEsEmpresa(dni, nombre, esEmpresa))
+        when(propietarioRepository.findByFilter(dni, nombre, esEmpresa))
                 .thenReturn(mockLista);
 
         when(modelMapper.map(mockLista, new TypeToken<List<PropietarioOutDto>>() {}.getType()))
@@ -89,7 +89,7 @@ public class PropietarioServiceTests {
         List<PropietarioOutDto> resultado = propietarioService.findAll(dni, nombre, esEmpresa);
 
         assertEquals(1, resultado.size());
-        verify(propietarioRepository).findByDniContainingAndNombreContainingAndEsEmpresa(dni, nombre, esEmpresa);
+        verify(propietarioRepository).findByFilter(dni, nombre, esEmpresa);
     }
 
     // TEST FIND BY ID

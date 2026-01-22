@@ -71,10 +71,10 @@ public class InmuebleService {
         boolean hayFiltros = precioMax != null || metrosMin != null || ascensor != null;
 
         if (hayFiltros) {
-            // Llama a método específico del repositorio (Precio <=, Metros >=, Ascensor =)
+            /* Llama a método específico del repositorio (Precio <=, Metros >=, Ascensor =)
             inmuebles = inmuebleRepository.findByPrecioLessThanEqualAndMetrosGreaterThanEqualAndAscensor(
-                    precioMax, metrosMin, ascensor
-            );
+                    precioMax, metrosMin, ascensor);*/
+            inmuebles = inmuebleRepository.findByFilter(precioMax, metrosMin, ascensor);
         } else {
             inmuebles = inmuebleRepository.findAll();
         }

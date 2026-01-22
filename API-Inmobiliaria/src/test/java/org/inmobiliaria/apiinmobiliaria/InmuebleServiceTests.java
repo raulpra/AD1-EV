@@ -78,7 +78,7 @@ public class InmuebleServiceTests {
         Integer metrosMin = 90;
         Boolean ascensor = true;
 
-        when(inmuebleRepository.findByPrecioLessThanEqualAndMetrosGreaterThanEqualAndAscensor(precioMax, metrosMin, ascensor))
+        when(inmuebleRepository.findByFilter(precioMax, metrosMin, ascensor))
                 .thenReturn(mockLista);
 
         when(modelMapper.map(mockLista, new TypeToken<List<InmuebleOutDto>>() {}.getType()))
@@ -87,7 +87,7 @@ public class InmuebleServiceTests {
         List<InmuebleOutDto> resultado = inmuebleService.findAll(precioMax, metrosMin, ascensor);
 
         assertEquals(1, resultado.size());
-        verify(inmuebleRepository).findByPrecioLessThanEqualAndMetrosGreaterThanEqualAndAscensor(precioMax, metrosMin, ascensor);
+        verify(inmuebleRepository).findByFilter(precioMax, metrosMin, ascensor);
     }
 
     // TEST FIND BY ID

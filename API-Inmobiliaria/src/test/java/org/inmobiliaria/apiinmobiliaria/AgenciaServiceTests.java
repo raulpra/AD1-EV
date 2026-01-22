@@ -83,7 +83,7 @@ public class AgenciaServiceTests {
         Integer cp = 28001;
         Boolean sabados = true;
 
-        when(agenciaRepository.findByNombreContainingIgnoreCaseAndCodigoPostalAndAbiertoSabados(nombre, cp, sabados))
+        when(agenciaRepository.findByFilter(nombre, cp, sabados))
                 .thenReturn(mockAgenciaList);
         when(modelMapper.map(mockAgenciaList, new TypeToken<List<AgenciaOutDto>>() {}.getType())).thenReturn(mockModelMapperOut);
 
@@ -95,7 +95,7 @@ public class AgenciaServiceTests {
 
         // Verificamos que llamó al método con filtros y NO al findAll()
         verify(agenciaRepository, times(0)).findAll();
-        verify(agenciaRepository, times(1)).findByNombreContainingIgnoreCaseAndCodigoPostalAndAbiertoSabados(nombre, cp, sabados);
+        verify(agenciaRepository, times(1)).findByFilter(nombre, cp, sabados);
     }
 
     @Test

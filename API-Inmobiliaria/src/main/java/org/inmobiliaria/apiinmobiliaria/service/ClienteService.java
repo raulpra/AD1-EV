@@ -42,10 +42,11 @@ public class ClienteService {
         boolean hayFiltros = email != null || telefono != null || suscrito != null;
 
         if (hayFiltros) {
-            // Repositorio con JPA standard (email containing, telefono exact, suscrito exact)
+            /* Repositorio con JPA standard (email containing, telefono exact, suscrito exact)
             clientes = clienteRepository.findByEmailContainingAndTelefonoContainingAndSuscrito(
-                    email, telefono, suscrito
-            );
+                    email, telefono, suscrito);*/
+            clientes = clienteRepository.findByFilter(email, telefono, suscrito);
+
         } else {
             clientes = clienteRepository.findAll();
         }

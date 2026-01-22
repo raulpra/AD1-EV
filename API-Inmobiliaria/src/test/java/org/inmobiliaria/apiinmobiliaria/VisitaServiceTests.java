@@ -74,7 +74,7 @@ public class VisitaServiceTests {
         LocalDateTime fecha = LocalDateTime.now();
         Float valoracion = 4.0f;
 
-        when(visitaRepository.findByEstadoAndFechaHoraGreaterThanEqualAndValoracionGreaterThanEqual(estado, fecha, valoracion))
+        when(visitaRepository.findByFilter(estado, fecha, valoracion))
                 .thenReturn(mockLista);
 
         when(modelMapper.map(mockLista, new TypeToken<List<VisitaOutDto>>() {}.getType())).thenReturn(mockOutDtos);
@@ -82,7 +82,7 @@ public class VisitaServiceTests {
         List<VisitaOutDto> result = visitaService.findAll(estado, fecha, valoracion);
 
         assertEquals(1, result.size());
-        verify(visitaRepository).findByEstadoAndFechaHoraGreaterThanEqualAndValoracionGreaterThanEqual(estado, fecha, valoracion);
+        verify(visitaRepository).findByFilter(estado, fecha, valoracion);
     }
 
     // TEST FIND BY ID
