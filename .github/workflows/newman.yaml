@@ -18,5 +18,6 @@ jobs:
       - run: mvn package
       - run: docker build -t api-inmobiliaria .
       - run: docker compose up -d
+      - run: sleep 3
       - run: npm install -g newman
       - run: newman run tests_api_inmobiliaria.postman_collection.json -e local.postman_environment.json
