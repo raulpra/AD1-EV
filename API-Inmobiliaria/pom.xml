@@ -10,7 +10,7 @@
     </parent>
     <groupId>org.inmobiliaria</groupId>
     <artifactId>API-Inmobiliaria</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.1</version>
     <name>API-Inmobiliaria</name>
     <description>API-Inmobiliaria</description>
     <url/>
