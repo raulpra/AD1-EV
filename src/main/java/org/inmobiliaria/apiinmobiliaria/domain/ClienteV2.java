@@ -6,25 +6,22 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
 
 import java.time.LocalDate;
-import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity(name = "Cliente")
-@Table(name = "cliente")
-
-public class Cliente {
+@Entity(name = "ClienteV2")
+@Table(name = "cliente")// Tabla independiente
+public class ClienteV2 {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
     @Column
-    @NotBlank (message = "El campo no puede estar vacío")
-    @Email (message = "El mail no tiene un formato válido")
+    @NotBlank(message = "El campo no puede estar vacío")
+    @Email(message = "El mail no tiene un formato válido")
     @Size(max = 100)
     private String email;
 
@@ -55,8 +52,8 @@ public class Cliente {
     @NotNull(message = "El estado de suscripción es obligatorio")
     private Boolean suscrito;
 
-    // Relación 1:N con Visitas
-    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
-    @ToString.Exclude
-    private List<Visita> visitas;
+    // NUEVO CAMPO OBLIGATORIO DE LA V2
+    @Column(name = "tipo_vivienda")
+    @NotBlank(message = "El tipo de vivienda buscada es obligatorio en V2")
+    private String tipoVivienda;
 }
