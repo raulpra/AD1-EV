@@ -955,12 +955,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/propietarios",
-              "protocol": "http",
+              "raw": "{{HOST}}/propietarios",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "propietarios"
               ]
@@ -970,16 +968,26 @@
         },
         {
           "name": "2.2 Listar Propietarios (TODOS)",
+          "protocolProfileBehavior": {
+            "disableBodyPruning": true
+          },
           "request": {
             "method": "GET",
             "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
             "url": {
-              "raw": "http://localhost:8080/propietarios",
-              "protocol": "http",
+              "raw": "{{HOST}}/propietarios",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "propietarios"
               ]
@@ -993,12 +1001,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/propietarios",
-              "protocol": "http",
+              "raw": "{{HOST}}/propietarios",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "propietarios"
               ],
@@ -1038,12 +1044,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/propietarios/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/propietarios/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "propietarios",
                 "1"
@@ -1067,12 +1071,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/propietarios/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/propietarios/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "propietarios",
                 "1"
@@ -1087,12 +1089,10 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/propietarios/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/propietarios/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "propietarios",
                 "1"
@@ -1107,12 +1107,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/propietarios/empresas",
-              "protocol": "http",
+              "raw": "{{HOST}}/propietarios/empresas",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "propietarios",
                 "empresas"
@@ -1120,6 +1118,45 @@
             }
           },
           "response": []
+        }
+      ],
+      "auth": {
+        "type": "apikey",
+        "apikey": [
+          {
+            "key": "value",
+            "value": "{{api_key}}",
+            "type": "string"
+          },
+          {
+            "key": "key",
+            "value": "X-API-KEY",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
         }
       ]
     },
@@ -1141,12 +1178,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/clientes",
-              "protocol": "http",
+              "raw": "{{HOST}}/clientes",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "clientes"
               ]
@@ -1160,12 +1195,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/clientes",
-              "protocol": "http",
+              "raw": "{{HOST}}/clientes",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "clientes"
               ]
@@ -1179,12 +1212,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/clientes",
-              "protocol": "http",
+              "raw": "{{HOST}}/clientes",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "clientes"
               ],
@@ -1230,12 +1261,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/clientes/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/clientes/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "clientes",
                 "1"
@@ -1259,12 +1288,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/clientes/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/clientes/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "clientes",
                 "1"
@@ -1279,12 +1306,10 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/clientes/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/clientes/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "clientes",
                 "1"
@@ -1299,12 +1324,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/clientes/vip?presupuesto=150000",
-              "protocol": "http",
+              "raw": "{{HOST}}/clientes/vip?presupuesto=150000",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "clientes",
                 "vip"
@@ -1318,6 +1341,45 @@
             }
           },
           "response": []
+        }
+      ],
+      "auth": {
+        "type": "apikey",
+        "apikey": [
+          {
+            "key": "value",
+            "value": "{{api_key}}",
+            "type": "string"
+          },
+          {
+            "key": "key",
+            "value": "X-API-KEY",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
         }
       ]
     },
@@ -1339,12 +1401,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/inmuebles",
-              "protocol": "http",
+              "raw": "{{HOST}}/inmuebles",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "inmuebles"
               ]
@@ -1358,12 +1418,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/inmuebles",
-              "protocol": "http",
+              "raw": "{{HOST}}/inmuebles",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "inmuebles"
               ]
@@ -1377,12 +1435,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/inmuebles",
-              "protocol": "http",
+              "raw": "{{HOST}}/inmuebles",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "inmuebles"
               ],
@@ -1422,12 +1478,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/inmuebles/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/inmuebles/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "inmuebles",
                 "1"
@@ -1451,12 +1505,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/inmuebles/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/inmuebles/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "inmuebles",
                 "1"
@@ -1471,12 +1523,10 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/inmuebles/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/inmuebles/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "inmuebles",
                 "1"
@@ -1491,12 +1541,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/inmuebles/rango?min=100000&max=200000",
-              "protocol": "http",
+              "raw": "{{HOST}}/inmuebles/rango?min=100000&max=200000",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "inmuebles",
                 "rango"
@@ -1533,12 +1581,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/inmuebles/grandes?metros=100",
-              "protocol": "http",
+              "raw": "{{HOST}}/inmuebles/grandes?metros=100",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "inmuebles",
                 "grandes"
@@ -1552,6 +1598,45 @@
             }
           },
           "response": []
+        }
+      ],
+      "auth": {
+        "type": "apikey",
+        "apikey": [
+          {
+            "key": "value",
+            "value": "{{api_key}}",
+            "type": "string"
+          },
+          {
+            "key": "key",
+            "value": "X-API-KEY",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
         }
       ]
     },
@@ -1573,12 +1658,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/visitas",
-              "protocol": "http",
+              "raw": "{{HOST}}/visitas",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "visitas"
               ]
@@ -1592,12 +1675,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/visitas",
-              "protocol": "http",
+              "raw": "{{HOST}}/visitas",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "visitas"
               ]
@@ -1611,12 +1692,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/visitas",
-              "protocol": "http",
+              "raw": "{{HOST}}/visitas",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "visitas"
               ],
@@ -1650,12 +1729,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/visitas/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/visitas/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "visitas",
                 "1"
@@ -1679,12 +1756,10 @@
               }
             },
             "url": {
-              "raw": "http://localhost:8080/visitas/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/visitas/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "visitas",
                 "1"
@@ -1699,12 +1774,10 @@
             "method": "DELETE",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/visitas/1",
-              "protocol": "http",
+              "raw": "{{HOST}}/visitas/1",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "visitas",
                 "1"
@@ -1719,12 +1792,10 @@
             "method": "GET",
             "header": [],
             "url": {
-              "raw": "http://localhost:8080/visitas/pasadas",
-              "protocol": "http",
+              "raw": "{{HOST}}/visitas/pasadas",
               "host": [
-                "localhost"
+                "{{HOST}}"
               ],
-              "port": "8080",
               "path": [
                 "visitas",
                 "pasadas"
@@ -1732,6 +1803,45 @@
             }
           },
           "response": []
+        }
+      ],
+      "auth": {
+        "type": "apikey",
+        "apikey": [
+          {
+            "key": "value",
+            "value": "{{api_key}}",
+            "type": "string"
+          },
+          {
+            "key": "key",
+            "value": "X-API-KEY",
+            "type": "string"
+          }
+        ]
+      },
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "packages": {},
+            "requests": {},
+            "exec": [
+              ""
+            ]
+          }
         }
       ]
     }
