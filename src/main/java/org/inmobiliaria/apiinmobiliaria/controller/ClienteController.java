@@ -111,13 +111,13 @@ public class ClienteController {
 
 
 // ==========================================================
-// MÉTODOS VERSIÓN 2 (El requisito de la práctica)
+// MÉTODOS VERSIÓN 2
 // ==========================================================
 
     /**
-     * 1. GET (V2) - CAMBIO DE SALIDA
-     * Explicación: Además de ocultar datos por seguridad, la V2 devuelve un
-     * campo calculado dinámicamente ('diasRegistrado') basado en la 'fechaAlta'.
+      1. GET (V2) - CAMBIO DE SALIDA
+      Además de ocultar datos por seguridad, la V2 devuelve un
+      campo calculado dinámicamente ('diasRegistrado') basado en la 'fechaAlta'.
      */
     @GetMapping("/v2/clientes/{id}")
     public ResponseEntity<ClienteOutDtoV2> getByIdV2(@PathVariable long id) throws ClienteNotFoundException {
@@ -126,9 +126,9 @@ public class ClienteController {
     }
 
     /**
-     * 2. POST (V2) - CAMBIO DE ENTRADA
-     * Explicación: Se exige un nuevo DTO (ClienteInDtoV2) que incluye el campo
-     * 'tipoVivienda' como estrictamente obligatorio.
+      2. POST (V2) - CAMBIO DE ENTRADA
+      Se exige un nuevo DTO (ClienteInDtoV2) que incluye el campo
+      'tipoVivienda' como obligatorio.
      */
     @PostMapping("/v2/clientes")
     public ResponseEntity<ClienteOutDtoV2> addClienteV2(@Valid @RequestBody ClienteInDtoV2 clienteInDtoV2) {
@@ -137,9 +137,9 @@ public class ClienteController {
     }
 
     /**
-     * 3. PUT (V2) - CAMBIO DE FUNCIONAMIENTO (Protección de datos)
-     * Explicación: Modificamos el funcionamiento del update. Por seguridad, en la V2
-     * se ignoran los intentos de modificar el 'email' y la 'fechaAlta' del cliente.
+      3. PUT (V2) - CAMBIO DE FUNCIONAMIENTO (Protección de datos)
+      Modificamos el funcionamiento del update. Por seguridad, en la V2
+      se ignoran los intentos de modificar el 'email' y la 'fechaAlta' del cliente.
      */
     @PutMapping("/v2/clientes/{id}")
     public ResponseEntity<ClienteOutDtoV2> modifyClienteV2(
@@ -151,9 +151,9 @@ public class ClienteController {
     }
 
     /**
-     * 4. DELETE (V2) - CAMBIO DE SALIDA
-     * Explicación: La V1 devolvía 204 No Content. La V2 devuelve 200 OK con un
-     * JSON que incluye datos de auditoría (ID eliminado y fecha/hora de baja).
+      4. DELETE (V2) - CAMBIO DE SALIDA
+      La V1 devolvía 204 No Content. La V2 devuelve 200 OK con un
+      JSON que incluye datos de auditoría (ID eliminado y fecha/hora de baja).
      */
     @DeleteMapping("/v2/clientes/{id}")
     public ResponseEntity<Map<String, Object>> deleteClienteV2(@PathVariable long id) throws ClienteNotFoundException {

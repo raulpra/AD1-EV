@@ -6,11 +6,26 @@ info:
 servers:
   - url: 'https://api.inmobiliaria.com'
 
-paths:
-  # ENTIDAD: AGENCIA
+tags:
+  - name: Agencias
+    description: Endpoints para la gestión de agencias
+  - name: Propietarios
+    description: Endpoints para la gestión de propietarios
+  - name: Inmuebles
+    description: Endpoints para la gestión de inmuebles
+  - name: Clientes
+    description: Gestión de clientes
+  - name: Visitas
+    description: Endpoints para la gestión de visitas
 
+paths:
+  # ==========================================
+  # ENTIDAD: AGENCIA
+  # ==========================================
   /agencias:
     get:
+      tags:
+        - Agencias
       summary: Lista de agencias
       description: |
         Devuelve una lista con todas las agencias
@@ -47,7 +62,7 @@ paths:
               examples:
                 ListaInmobiliarias:
                   summary: Lista con varias inmobiliarias
-                  value: 
+                  value:
                     - id: 1
                       nombre: "Inmobiliaria Norte"
                       direccion: "Calle A, 1"
@@ -79,6 +94,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
     post:
+      tags:
+        - Agencias
       summary: Crear nueva agencia
       description: Registra una nueva agencia
       requestBody:
@@ -155,6 +172,8 @@ paths:
 
   /agencias/{id}:
     get:
+      tags:
+        - Agencias
       summary: Listar agencia por id
       description: |
         Devuelve una sola agencia por su id
@@ -206,6 +225,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
     put:
+      tags:
+        - Agencias
       summary: Actualizar agencia
       description:  |
         Actualiza los datos de una agencia.
@@ -272,6 +293,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
     delete:
+      tags:
+        - Agencias
       summary: Eliminar agencia
       description: |
         Elimina los datos de una agencia
@@ -285,11 +308,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
 
-
-  #  ENTIDAD: PROPIETARIO
-
+  # ==========================================
+  # ENTIDAD: PROPIETARIO
+  # ==========================================
   /propietarios:
     get:
+      tags:
+        - Propietarios
       summary: Listar propietarios
       description: |
         Devuelve una lista con todos los propietarios
@@ -355,6 +380,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
     post:
+      tags:
+        - Propietarios
       summary: Crear propietario
       description: Registra un nuevo propietario
       requestBody:
@@ -431,6 +458,8 @@ paths:
 
   /propietarios/{id}:
     get:
+      tags:
+        - Propietarios
       summary: Listar propietario por id
       description: |
         Devuelve una solo propietario por su id
@@ -482,6 +511,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
     put:
+      tags:
+        - Propietarios
       summary: Actualizar propietario
       description: |
         Actualiza los datos de un propietario
@@ -496,7 +527,7 @@ paths:
                 value:
                   dni: "12345678Z"
                   nombre: "Pepe García"
-                  telefono: "699999999" 
+                  telefono: "699999999"
                   comision: 3.5
                   esEmpresa: false
                   fechaAlta: "2023-01-01"
@@ -548,6 +579,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
     delete:
+      tags:
+        - Propietarios
       summary: Eliminar propietario
       description: |
         Elimina los datos de un propietario
@@ -561,11 +594,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
 
-
-  #  ENTIDAD: INMUEBLE
-
+  # ==========================================
+  # ENTIDAD: INMUEBLE
+  # ==========================================
   /inmuebles:
     get:
+      tags:
+        - Inmuebles
       summary: Lista de inmuebles
       description: |
         Devuelve una lista con todos los inmuebles
@@ -635,6 +670,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
     post:
+      tags:
+        - Inmuebles
       summary: Crear nuevo inmueble
       description: Registra un nuevo inmueble
       requestBody:
@@ -722,8 +759,9 @@ paths:
                 $ref: '#/components/schemas/InternalServerError'
 
   /inmuebles/{id}:
-
     get:
+      tags:
+        - Inmuebles
       summary: Obtener inmueble por id
       description: |
         Devuelve un solo inmueble por su id
@@ -774,8 +812,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
-
     put:
+      tags:
+        - Inmuebles
       summary: Actualizar inmueble
       description: |
         Actualiza los datos de un inmueble
@@ -802,7 +841,7 @@ paths:
                 value:
                   titulo: "Ático luminoso"
                   precio: 350000.00
-                  metros: 115 
+                  metros: 115
                   latitud: 40.4167
                   longitud: -3.7037
                   ascensor: true
@@ -854,6 +893,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
     delete:
+      tags:
+        - Inmuebles
       summary: Eliminar inmueble
       description : |
         Elimina los datos de un inmueble
@@ -867,10 +908,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
 
-  #  ENTIDAD: CLIENTE
-
+  # ==========================================
+  # ENTIDAD: CLIENTE
+  # ==========================================
   /clientes:
     get:
+      tags:
+        - Clientes
       summary: Lista de clientes
       description: |
         Devuelve una lista con todos los clientes
@@ -930,6 +974,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
     post:
+      tags:
+        - Clientes
       summary: Crear nuevo cliente
       description: Registra un nuevo cliente
       requestBody:
@@ -1008,9 +1054,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
 
-
   /clientes/{id}:
     get:
+      tags:
+        - Clientes
       summary: Obtener cliente
       description: |
         Devuelve una solo cliente por su id
@@ -1056,8 +1103,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
-
     put:
+      tags:
+        - Clientes
       summary: Actualizar cliente
       description: |
         Actualiza los datos de un cliente.
@@ -1127,8 +1175,9 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/NotFound'
-
     delete:
+      tags:
+        - Clientes
       summary: Eliminar cliente
       description: |
         Elimina los datos de un cliente
@@ -1142,10 +1191,200 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
 
-  # 5. ENTIDAD: VISITA
+  # ==========================================
+  # ENTIDAD: CLIENTE (V2) - NUEVOS ENDPOINTS
+  # ==========================================
+  /v2/clientes:
+    post:
+      tags:
+        - Clientes
+      summary: Crear nuevo cliente (V2)
+      description: |
+        Registra un nuevo cliente exigiendo de forma obligatoria el `tipoVivienda`.
+        También valida que clientes VIP proporcionen teléfono obligatoriamente.
+      requestBody:
+        description: Datos del nuevo cliente (V2)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteInDtoV2'
+            examples:
+              clienteV2:
+                summary: Cliente con tipo de vivienda
+                value:
+                  email: "v2@mail.com"
+                  password: "SecurePass"
+                  telefono: "600222333"
+                  presupuestoMaximo: 200000.0
+                  edad: 30
+                  fechaAlta: "2026-01-01"
+                  suscrito: true
+                  tipoVivienda: "Chalet"
+      responses:
+        '201':
+          description: Cliente registrado correctamente
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteOutDtoV2'
+              examples:
+                respV2:
+                  summary: Respuesta V2 (con días registrados y sin password)
+                  value:
+                    id: 105
+                    email: "v2@mail.com"
+                    telefono: "600222333"
+                    presupuestoMaximo: 200000.0
+                    edad: 30
+                    fechaAlta: "2026-01-01"
+                    suscrito: true
+                    tipoVivienda: "Chalet"
+                    diasRegistrado: 122
+        '400':
+          description: Bad request (Ej. Falta tipoVivienda o teléfono en VIP)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BadRequest'
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InternalServerError'
 
+  /v2/clientes/{id}:
+    get:
+      tags:
+        - Clientes
+      summary: Obtener cliente (V2)
+      description: |
+        Devuelve un cliente por su id. Esta versión oculta la contraseña 
+        y devuelve un nuevo campo calculado `diasRegistrado`.
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteOutDtoV2'
+              examples:
+                cliV2:
+                  summary: Cliente V2 devuelto
+                  value:
+                    id: 105
+                    email: "v2@mail.com"
+                    telefono: "600222333"
+                    presupuestoMaximo: 200000.0
+                    edad: 30
+                    fechaAlta: "2026-01-01"
+                    suscrito: true
+                    tipoVivienda: "Chalet"
+                    diasRegistrado: 122
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+    put:
+      tags:
+        - Clientes
+      summary: Actualizar cliente (V2)
+      description: |
+        Actualiza los datos del cliente, pero ignorando cualquier intento de 
+        modificar el `email` o la `fechaAlta` por seguridad.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClienteInDtoV2'
+            examples:
+              actualizarDatos:
+                summary: Actualizar teléfono y vivienda
+                value:
+                  email: "intento@cambio.com"
+                  password: "SecurePass"
+                  telefono: "699888777"
+                  presupuestoMaximo: 200000.0
+                  edad: 30
+                  fechaAlta: "2026-02-01"
+                  suscrito: true
+                  tipoVivienda: "Piso"
+      responses:
+        '200':
+          description: Cliente actualizado (ignorando email/fechaAlta nuevos)
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClienteOutDtoV2'
+              examples:
+                actualizado:
+                  summary: Cliente actualizado
+                  value:
+                    id: 105
+                    email: "v2@mail.com"
+                    telefono: "699888777"
+                    presupuestoMaximo: 200000.0
+                    edad: 30
+                    fechaAlta: "2026-01-01"
+                    suscrito: true
+                    tipoVivienda: "Piso"
+                    diasRegistrado: 122
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+    delete:
+      tags:
+        - Clientes
+      summary: Eliminar cliente (V2)
+      description: Elimina los datos de un cliente devolviendo un JSON con información de auditoría.
+      responses:
+        '200':
+          description: Eliminado correctamente con respuesta JSON detallada
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  mensaje:
+                    type: string
+                  id_cliente:
+                    type: integer
+                    format: int64
+                  timestamp:
+                    type: string
+                    format: date-time
+              examples:
+                exito:
+                  summary: Respuesta de éxito
+                  value:
+                    mensaje: "Cliente dado de baja permanentemente (V2)"
+                    id_cliente: 105
+                    timestamp: "2026-05-03T18:41:00Z"
+        '404':
+          description: Not found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NotFound'
+
+  # ==========================================
+  # ENTIDAD: VISITA
+  # ==========================================
   /visitas:
     get:
+      tags:
+        - Visitas
       summary: Listar visitas
       description: |
         Devuelve una lista con todas las visitas
@@ -1214,6 +1453,8 @@ paths:
                 $ref: '#/components/schemas/InternalServerError'
 
     post:
+      tags:
+        - Visitas
       summary: Crear visita
       description: Registra una nueva visita
       requestBody:
@@ -1296,9 +1537,10 @@ paths:
               schema:
                 $ref: '#/components/schemas/InternalServerError'
 
-
   /visitas/{id}:
     get:
+      tags:
+        - Visitas
       summary: Listar visita por id
       description: |
         Devuelve una sola visita por id
@@ -1349,6 +1591,8 @@ paths:
                 $ref: '#/components/schemas/InternalServerError'
 
     put:
+      tags:
+        - Visitas
       summary: Actualizar visita
       description: |
         Actualiza los datos de una visita
@@ -1423,6 +1667,8 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
     delete:
+      tags:
+        - Visitas
       summary: Eliminar visita
       description: |
         Elimina los datos de una visita
@@ -1436,10 +1682,9 @@ paths:
               schema:
                 $ref: '#/components/schemas/NotFound'
 
-
 components:
   schemas:
-    #  SCHEMAS AGENCIA (Agencia y AgenciaOutDto son iguales)
+    # SCHEMAS AGENCIA
     Agencia:
       allOf:
         - $ref: '#/components/schemas/AgenciaOutDto'
@@ -1472,8 +1717,7 @@ components:
           type: integer
           format: int64
 
-
-    # SCHEMAS PROPIETARIO (Propietario y propietarioOutDto son iguales)
+    # SCHEMAS PROPIETARIO
     Propietario:
       allOf:
         - $ref: '#/components/schemas/PropietarioOutDto'
@@ -1507,8 +1751,7 @@ components:
           type: integer
           format: int64
 
-
-    # SCHEMAS INMUEBLE ( InmuebleOutDto no muestra latitud, longitud ni fecha de publicación)
+    # SCHEMAS INMUEBLE
     Inmueble:
       allOf:
         - $ref: '#/components/schemas/InmuebleInDto'
@@ -1571,8 +1814,7 @@ components:
         nombrePropietario:
           type: string
 
-
-    # SCHEMAS CLIENTE (ClienteOutDto no muestra password ni presupuesto)
+    # SCHEMAS CLIENTE (V1)
     Cliente:
       allOf:
         - $ref: '#/components/schemas/ClienteInDto'
@@ -1620,8 +1862,72 @@ components:
         suscrito:
           type: boolean
 
+    # ==========================================
+    # SCHEMAS CLIENTE (V2) - NUEVOS SCHEMAS
+    # ==========================================
+    ClienteInDtoV2:
+      type: object
+      required:
+        - email
+        - password
+        - telefono
+        - presupuestoMaximo
+        - edad
+        - fechaAlta
+        - suscrito
+        - tipoVivienda
+      properties:
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        telefono:
+          type: string
+        presupuestoMaximo:
+          type: number
+          format: float
+        edad:
+          type: integer
+        fechaAlta:
+          type: string
+          format: date
+        suscrito:
+          type: boolean
+        tipoVivienda:
+          type: string
+          description: El tipo de vivienda buscada (ej. Piso, Chalet, Dúplex)
 
-    # SCHEMAS VISITA (VisitaOutDto no muestra comentarios, duracionEstimada y recordatorioActivo)
+    ClienteOutDtoV2:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        email:
+          type: string
+          format: email
+        telefono:
+          type: string
+        presupuestoMaximo:
+          type: number
+          format: float
+        edad:
+          type: integer
+        fechaAlta:
+          type: string
+          format: date
+        suscrito:
+          type: boolean
+        tipoVivienda:
+          type: string
+        diasRegistrado:
+          type: integer
+          format: int64
+          description: Días calculados desde la fecha de alta hasta la actualidad
+
+    # SCHEMAS VISITA
     Visita:
       allOf:
         - $ref: '#/components/schemas/VisitaInDto'
@@ -1676,7 +1982,7 @@ components:
         tituloInmueble:
           type: string
 
-
+    # SCHEMAS ERRORES
     ErrorResponse:
       type: object
       properties:
