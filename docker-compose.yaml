@@ -5,11 +5,11 @@ services:
     container_name: inmobiliaria-db
     restart: always
     environment:
-      MYSQL_USER: inmobiliaria_user
-      MYSQL_PASSWORD: inmobiliaria_password
-      MYSQL_DATABASE: inmobiliaria
+      MYSQL_USER: $MARIADB_USER
+      MYSQL_PASSWORD: $MARIADB_PASSWORD
+      MYSQL_DATABASE: $MARIADB_DATABASE
       MYSQL_PORT: 3306
-      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_ROOT_PASSWORD: $MARIADB_ROOT_PASSWORD
     ports:
       - "3306:3306"
     healthcheck:
@@ -28,16 +28,7 @@ services:
       inmobiliaria-db:
         condition: service_healthy
     environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.application.name": "inmobiliaria",
-        "sever.port": "8080",
-        "spring.jpa.hibernate.ddl-auto": "update",
-        "spring.jpa.properties.hibernate.globally_quoted_identifiers": "true",
-        "spring.datasource.url": "jdbc:mariadb://inmobiliaria-db:3306/inmobiliaria",
-        "spring.datasource.username": "inmobiliaria_user",
-        "spring.datasource.password": "inmobiliaria_password",
-        "spring.jpa.database-platform": "org.hibernate.dialect.MariaDBDialect"
-      }'
+      SPRING_PROFILES_ACTIVE: $PROFILE
     networks:
       - network-inmobiliaria
 networks:
