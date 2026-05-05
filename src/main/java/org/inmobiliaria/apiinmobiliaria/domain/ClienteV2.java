@@ -6,8 +6,10 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -53,7 +55,14 @@ public class ClienteV2 {
     private Boolean suscrito;
 
     // NUEVO CAMPO OBLIGATORIO DE LA V2
-    @Column(name = "tipo_vivienda")
+    @Column(name = "tipo_vivienda", columnDefinition = "varchar(255) default 'NO_ESPECIFICADO'")
     @NotBlank(message = "El tipo de vivienda buscada es obligatorio en V2")
     private String tipoVivienda;
+
+    // Relación 1:N con Visitas
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    @ToString.Exclude
+    private List<Visita> visitas;
+
+
 }

@@ -20,7 +20,7 @@ services:
     networks:
       - network-inmobiliaria
   api-inmobiliaria:
-    image: api-inmobiliaria
+    image: raulpra/api-inmobiliaria
     container_name: api-inmobiliaria-test
     ports:
       - "8082:8080"
