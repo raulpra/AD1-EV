@@ -5,8 +5,8 @@ services:
     container_name: inmobiliaria-db
     restart: always
     environment:
-      MYSQL_USER: inmobiliaria_user
-      MYSQL_PASSWORD: inmobiliaria_password
+      MYSQL_USER: test_user
+      MYSQL_PASSWORD: test_password
       MYSQL_DATABASE: inmobiliaria
       MYSQL_PORT: 3306
       MYSQL_ROOT_PASSWORD: rootpassword
