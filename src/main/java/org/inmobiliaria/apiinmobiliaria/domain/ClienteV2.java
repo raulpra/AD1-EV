@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -55,7 +56,8 @@ public class ClienteV2 {
     private Boolean suscrito;
 
     // NUEVO CAMPO OBLIGATORIO DE LA V2
-    @Column(name = "tipo_vivienda", columnDefinition = "varchar(255) default 'NO_ESPECIFICADO'")
+    @Column(name = "tipo_vivienda", nullable = false)
+    @ColumnDefault("'NO_ESPECIFICADO'")
     @NotBlank(message = "El tipo de vivienda buscada es obligatorio en V2")
     private String tipoVivienda;
 

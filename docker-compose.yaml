@@ -29,6 +29,11 @@ services:
         condition: service_healthy
     environment:
       SPRING_PROFILES_ACTIVE: $PROFILE
+      # API que salga del contenedor para buscar el Config Server en local
+      SPRING_CONFIG_IMPORT: optional:configserver:http://host.docker.internal:8888
+      # para que funcione en cualquier sistema
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     networks:
       - network-inmobiliaria
 networks:
